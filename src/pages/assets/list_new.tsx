@@ -1,10 +1,12 @@
 import React from "react";
+import { useEffect } from "react";
 import {
     useTranslate,
     IResourceComponentsProps,
     useTable,
     getDefaultFilter,
     HttpError,
+    CrudFilters,
     // CanAccess,
     // useNavigation,
 } from "@pankod/refine-core";
@@ -28,6 +30,19 @@ import {
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { AssetsItem, EditAsset, CategoryFilter, CreateAsset } from "../../components";
 import { IAssets } from "../../interfaces";
+
+const saveFiltersToLocalStorage = (
+    searchFilter?: string,
+) => {
+    localStorage.setItem('SearchFilterAssetsBrowser', JSON.stringify(searchFilter));
+};
+
+const loadFiltersFromLocalStorage = (
+) => {
+    return [
+        JSON.parse(String(localStorage.getItem('SearchFilterAssetsBrowser'))),
+    ]
+};
 
 export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     
@@ -64,6 +79,16 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     } = editDrawerFormProps;
 
     const assets: IAssets[] = tableQueryResult.data?.data || [];
+
+    // useEffect(() => {
+    //     const loadFilters = loadFiltersFromLocalStorage();
+    //     const searchFilter: CrudFilters = [{
+    //         field: "name|keywords|description",
+    //         operator: "contains",
+    //         value: loadFilters[0] !== null ? loadFilters[0] : ""
+    //     }];
+    //     setFilters(searchFilter);
+    // }, []);
 
     return (
         <>
@@ -118,19 +143,20 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                                         filters,
                                         "contains",
                                     )}
+                                    // value={filters}
                                     onChange={(
                                         e: React.ChangeEvent<HTMLInputElement>,
                                     ) => {
-                                        setFilters([
-                                            {
-                                                field: "name|keywords|description",
-                                                operator: "contains",
-                                                value:
-                                                    e.target.value !== ""
-                                                        ? e.target.value
-                                                        : undefined,
-                                            },
-                                        ]);
+                                        const searchFilter: CrudFilters = [{
+                                            field: "name|keywords|description",
+                                            operator: "contains",
+                                            value:
+                                                e.target.value !== ""
+                                                    ? e.target.value
+                                                    : undefined,
+                                        }];
+                                        saveFiltersToLocalStorage(e.target.value !== '' ? e.target.value : '');
+                                        setFilters(searchFilter);
                                     }}
                                 />
                             </Paper>

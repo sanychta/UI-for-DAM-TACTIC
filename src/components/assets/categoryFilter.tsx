@@ -11,6 +11,20 @@ import { Stack, Grid } from "@pankod/refine-mui";
 import { IAssetsCategory } from "../../interfaces";
 import React from "react";
 
+const saveFiltersToLocalStorage = (
+    filterCategories?: string[],
+) => {
+    localStorage.setItem('filterCategoriesAssetsBrowser', JSON.stringify(filterCategories));
+};
+
+const loadFiltersFromLocalStorage = (
+) => {
+    return [
+        JSON.parse(String(localStorage.getItem('filterCategoriesAssetsBrowser'))),
+    ]
+};
+
+
 type AssetItemProps = {
     setFilters: (filters: CrudFilters) => void;
     filters: CrudFilters;
@@ -31,6 +45,11 @@ export const CategoryFilter: React.FC<AssetItemProps> = ({
     });
 
     useEffect(() => {
+        const loadFilters = loadFiltersFromLocalStorage();
+        setFilterCategories(loadFilters[0] !== null ? loadFilters[0] : []);
+    }, []);
+
+    useEffect(() => {
         setFilters?.([
             {
                 field: "assets_category_code|AND",
@@ -39,6 +58,7 @@ export const CategoryFilter: React.FC<AssetItemProps> = ({
                     filterCategories.length > 0 ? filterCategories : undefined,
             },
         ]);
+        saveFiltersToLocalStorage(filterCategories);
     }, [filterCategories]);
 
     const toggleFilterCategory = (clickedCategory: string) => {
