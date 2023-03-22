@@ -1,0 +1,202 @@
+{
+    "pages": {
+        "login": {
+            "signin": "Sign in",
+            "signup": "Sign up",
+            "email": "Username",
+            "password": "Password",
+            "remember": "Remember me",
+            "forgotPassword": "Forgot?",
+            "noAccount": "Don’t have an account?",
+            "message": "<0>Sign in</0> your account"
+        },
+        "error": {
+            "info": "You may have forgotten to add the {{action}} component to {{resource}} resource.",
+            "404": "Sorry, the page you visited does not exist.",
+            "resource404": "Are you sure you have created the {{resource}} resource.",
+            "backHome": "Back Home"
+        }
+    },
+    "actions": {
+        "list": "List",
+        "create": "Create",
+        "edit": "Edit",
+        "show": "Show",
+        "all": "All"
+    },
+    "buttons": {
+        "add": "Add",
+        "create": "Create",
+        "save": "Save",
+        "logout": "Logout",
+        "delete": "Delete",
+        "edit": "Edit",
+        "cancel": "Cancel",
+        "confirm": "Are you sure?",
+        "filter": "Filter",
+        "clear": "Clear",
+        "refresh": "Refresh",
+        "show": "Show",
+        "undo": "Undo",
+        "import": "Import",
+        "export": "Export",
+        "clone": "Clone",
+        "accept": "Accept",
+        "acceptAll": "Accept All",
+        "reject": "Reject",
+        "rejectAll": "Reject All",
+        "nextStep": "Next",
+        "previousStep": "Previous"
+    },
+    "loading": "Loading",
+    "tags": {
+        "clone": "Clone"
+    },
+    "table": {
+        "actions": "Actions"
+    },
+    "search": {
+        "placeholder": "Search by Store ID, E-mail, Keyword",
+        "more": "more"
+    },
+    "status": {
+        "enable": "Enable",
+        "disable": "Disable"
+    },
+    "warnWhenUnsavedChanges": "Are you sure you want to leave? You have unsaved changes.",
+    "notifications": {
+        "success": "Successful",
+        "error": "Error (status code: {{statusCode}})",
+        "undoable": "You have {{seconds}} seconds to undo",
+        "createSuccess": "Successfully created {{resource}}",
+        "createError": "There was an error creating {{resource}} (status code: {{statusCode}})",
+        "deleteSuccess": "Successfully deleted {{resource}}",
+        "deleteError": "Error when deleting {{resource}} (status code: {{statusCode}})",
+        "editSuccess": "Successfully edited {{resource}}",
+        "editError": "Error when editing {{resource}} (status code: {{statusCode}})",
+        "importProgress": "Importing: {{processed}}/{{total}}"
+    },
+    "categories": {
+        "categories": "Categories",
+        "titles": {
+            "list": "Categories"
+        },
+        "fields": {
+            "id": "ID",
+            "preview": "Preview",
+            "name": "Name",
+            "description": "Description",
+            "code": "Code",
+            "keywords": "Keywords",
+            "image": {
+                "label": "Images",
+                "description": "Add asset picture",
+                "validation": "Photo resolution: 1080x1080 pixels."
+            }
+        },
+        "buttons": {
+            "create": "Create"
+        }
+    },
+    "assets":{
+        "assets": "Assets browser",
+        "noAssets": "No Assets",
+        "assetsSearch": "Search asset",
+        "tagFilterDescription": "Use tags to filter your search",
+        "titles": {
+            "list": "Assets",
+            "create": "Create",
+            "edit": "Edit"
+        },
+        "fields": {
+            "id": "ID",
+            "name": "Name",
+            "description": "Description",
+            "keywords": "Keywords",
+            "image": {
+                "label": "Images",
+                "description": "Add asset picture",
+                "validation": "Photo resolution: 1080x1080 pixels."
+            }
+        },
+        "buttons": {
+            "editProducts": "Produkte bearbeiten",
+            "addProduct": "Produkt erstellen",
+            "outOfStock": "Kein Bestand",
+            "edit": "Edit",
+            "show": "Open",
+            "retired": "Mark as deleted",
+            "delete": "Delete"
+        }
+    },    
+    "userslogins": {
+        "logins": "Logins",
+        "title": {
+            "list": "Logins"
+        },
+        "filters":{
+            "title": "Filter",
+            "filters": "Search",
+            "group": "Group",
+            "groupsearch": "Search by group",
+            "namesearch": "Name, login",
+            "searchby": "Search by name or login"
+        },
+        "fields": {
+            "login": "Login",
+            "name": "Name",
+            "email":"E-mail",
+            "phone": "Phone number"
+        }
+    },
+    "errors": {
+        "required": {
+            "field": "'{{ field }}' this field is required",
+            "common": "This field is required",
+            "min": "This field must be at least {{ min }} characters",
+            "max": "This field must be at most {{ max }} characters",
+            "invalidMail": "This field must be a valid email address"
+        }
+    },
+    "task":{
+        "task": "Tasks",
+        "fields":{
+            "id": "ID",
+            "description":"Description",
+            "assigned": "Assigned",
+            "status": "Status",
+            "process": "Process",
+            "priority": "Priority"
+        },
+        "filters": {
+            "status": "Status"
+        }
+    },
+    "scenes":{
+        "scenes": "Episodes",
+        "create": "Create Episode",
+        "scenesSearch": "Search episodes",        
+        "tagFilterDescription": "Use tags to filter your search",
+        "titles": {
+            "list": "Episodes",
+            "create": "Create",
+            "edit": "Edit"
+        },
+        "fields":{
+            "id": "ID",
+            "description":"Description",
+            "name": "Name",
+            "keywords": "Keywords",
+            "duration": "Duration",
+            "assets": "Assets",
+            "storyboard": "Storyboard",
+            "script": "Script",
+            "pipeline": "Pipeline",
+            "image": {
+                "label": "Images",
+                "description": "Add asset picture",
+                "validation": "Photo resolution: 1080x1080 pixels."
+            }
+        }
+    }
+}

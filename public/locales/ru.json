@@ -1,0 +1,248 @@
+{
+    "pages": {
+        "login": {
+            "title": "Войдите в свою учетную запись",
+            "signin": "Войти в систему",
+            "signup": "Зарегистрироваться",
+            "divider": "или",
+            "fields": {
+                "email": "Электронная почта",
+                "password": "Пароль"
+            },
+            "errors": {
+                "validEmail": "Неверный адрес электронной почты"
+            },
+            "buttons": {
+                "submit": "Регистрация",
+                "resetPassword": "Забыли пароль?",
+                "noAccount": "У вас нет учетной записи?",
+                "rememberMe": "Запомнить меня"
+            }
+        },
+        "resetPassword": {
+            "title": "Вы забыли свой пароль?",
+            "fields": {
+                "email": "Электронная почта"
+            },
+            "errors": {
+                "validEmail": "Неверный адрес электронной почты"
+            },
+            "buttons": {
+                "submit": "Отправка инструкций по сбросу"
+            }
+        },
+        "register": {
+            "title": "Зарегистрация своей учетной записи",
+            "fields": {
+                "email": "Электронная почта",
+                "password": "Пароль"
+            },
+            "errors": {
+                "validEmail": "Неверный адрес электронной почты"
+            },
+            "buttons": {
+                "submit": "Регистрация",
+                "haveAccount": "У вас есть аккаунт?"
+            }
+        },
+        "updatePassword": {
+            "title": "Обновить пароль",
+            "fields": {
+                "password": "Новый пароль",
+                "confirmPassword": "Подтвердите новый пароль"
+            },
+            "errors": {
+                "confirmPasswordNotMatch": "Пароли не совпадают"
+            },
+            "buttons": {
+                "submit": "Обновленить"
+            }
+        },
+        "error": {
+            "info": "Возможно, вы забыли добавить {{action}} компонент к {{resource}} ресурсу.",
+            "404": "Извините, страница, которую вы посетили, не существует.",
+            "resource404": "Вы уверены, что создали {{resource}} ресурс.",
+            "backHome": "Назад"
+        }
+    },
+    "actions": {
+        "list": "Список",
+        "create": "Создать",
+        "edit": "Редактировать",
+        "show": "Показать",
+        "all": "Все"
+    },
+    "buttons": {
+        "create": "Создать",
+        "save": "Сохранить",
+        "logout": "Выход из системы",
+        "delete": "Удалить",
+        "edit": "Редактировать",
+        "cancel": "Отмена",
+        "confirm": "Вы уверен?",
+        "filter": "Фильтр",
+        "clear": "Очистить",
+        "refresh": "Обновить",
+        "show": "Показать",
+        "undo": "Отменить",
+        "import": "Импорт",
+        "export": "Экспорт",
+        "clone": "Клонировать",
+        "accept": "Принять",
+        "acceptAll": "Принять всё",
+        "reject": "Отклонить",
+        "rejectAll": "Отклонить всё",
+        "nextStep": "Вперед",
+        "previousStep": "Назад"
+    },
+    "loading": "Загрузка",
+    "tags": {
+        "clone": "Клонировать"
+    },
+    "table": {
+        "actions": "Действие"
+    },
+    "search": {
+        "placeholder": "Поиск по ID, электронной почте, ключевым словам",
+        "more": "больше"
+    },
+    "status": {
+        "enable": "Включить",
+        "disable": "Выключить"
+    },
+    "warnWhenUnsavedChanges": "Вы уверены, что хотите уйти? У вас есть несохраненные изменения.",
+    "notifications": {
+        "success": "Успешно",
+        "error": "Ошибка (код состояния: {{StatusCode}})",
+        "undoable": "У вас есть {{seconds}} секунды, чтобы отменить",
+        "createSuccess": "Успешно создан {{resource}}.",
+        "createError": "Произошла ошибка при создании {{resource}} (код состояния: {{StatusCode}})",
+        "deleteSuccess": "Успешно удален {{resource}}.",
+        "deleteError": "Ошибка при удалении {{resource}} (код состояния: {{StatusCode}})",
+        "editSuccess": "Успешно отредактирован {{resource}}.",
+        "importProgress": "Импорт: {{processed}}/{{total}}"
+    },
+    "categories": {
+        "categories": "Категории",
+        "titles": {
+            "list": "Категории"
+        },
+        "fields": {
+            "id": "ID",
+            "preview": "Просмотр",
+            "name": "Название",
+            "description": "Описание",
+            "code": "Код",
+            "keywords": "Ключевые слова",
+            "image": {
+                "label": "Изображение",
+                "description": "Загрузите фотографию.",
+                "validation": "Разрешение фотографии: 1080x1080 пикселей."
+            }
+        },
+        "buttons": {
+            "create": "Создать"
+        }
+    },
+    "assets":{
+        "assets": "Браузер асетов",
+        "noAssets": "Нет Асетов",
+        "assetsSearch": "Поиск асета",
+        "tagFilterDescription": "Используйте теги для фильтрации вашего поиска",
+        "titles": {
+            "list": "Асеты",
+            "create": "Создать",
+            "edit": "Редактировать"
+        },
+        "fields": {
+            "id": "ID",
+            "name": "Название",
+            "description": "Описание",
+            "keywords": "Ключевые слова",
+            "image": {
+                "label": "Изображение",
+                "description": "Загрузите фотографию.",
+                "validation": "Разрешение фотографии: 1080x1080 пикселей."
+            }
+        },
+        "buttons": {
+            "editProducts": "Редактировать",
+            "addProduct": "Produkt erstellen",
+            "outOfStock": "Kein Bestand",
+            "edit": "Редактировать",
+            "show": "Открыть",
+            "retired": "Пометить удаленным",
+            "delete": "Удалить"
+        }
+    },
+    "userslogins":{
+        "logins": "Пользователи",
+        "titles": {
+            "list": "Пользователи"
+        },
+        "filters":{
+            "title": "Фильтр и поиск",
+            "filters": "Поиск",
+            "group": "Группа",
+            "groupsearch": "Поиск по группе",
+            "namesearch": "Имя, логин",
+            "searchby": "Поиск по имени или логину"
+        },
+        "fields": {
+            "login": "Имя пользователя",
+            "name": "Имя",
+            "email":"Электронная почта",
+            "phone": "Телефон"
+        }
+    },
+    "errors": {
+        "required": {
+            "field": "'{{ field }}' это поле является обязательным",
+            "common": "Dieses Feld wird benötigt",
+            "min": "Dieses Feld muss mindestens {{ min }} Zeichen lang sein",
+            "max": "Dieses Feld darf höchstens {{ max }} Zeichen lang sein",
+            "invalidMail": "Dieses Feld muss eine gültige E-Mail-Adresse sein"
+        }
+    },
+    "task":{
+        "task": "Задачи",
+        "fields":{
+            "id": "ID",
+            "description":"Описание",
+            "assigned": "Назначен",
+            "status": "Статус",
+            "process": "Процесс",
+            "priority": "Приоритет"
+        },
+        "filters": {
+            "status": "Статус"
+        }
+    },
+    "scenes":{
+        "scenes": "Эпизоды",
+        "create": "Создать Эпизод",
+        "scenesSearch": "Поиск эпизода",
+        "tagFilterDescription": "Используйте теги для фильтрации вашего поиска",
+        "titles": {
+            "list": "Эпизоды",
+            "create": "Создать",
+            "edit": "Редактировать"
+        },
+        "fields":{
+            "id": "ID",
+            "description":"Описание",
+            "name": "Имя",
+            "keywords": "Ключевые слова",
+            "duration": "Продолжительность",
+            "assets": "Асеты",
+            "storyboard": "Storyboard",
+            "script": "Сценарий",
+            "pipeline": "Pipeline",
+            "image": {
+                "label": "Изображение",
+                "description": "Загрузите фотографию.",
+                "validation": "Разрешение фотографии: 1080x1080 пикселей."
+            }
+        }
+    }
+}

@@ -1,0 +1,7 @@
+<manifest>
+  <data>
+    <code>refinejs/sample_app</code>
+    <title>RefineJS Sample Application</title>
+  </data>
+  <sobject search_type="config/prod_setting" path="prod_setting.spt" expression="@SOBJECT(config/prod_setting['code', 'like', 'REFINEJS%'])" ignore_columns="id, timestamp"/>
+</manifest>

@@ -1,0 +1,8 @@
+#-- Start Entry --#
+insert = SearchType.create('config/prod_setting')
+insert.set_value('code', """REFINEJS_PROJECTSETTING00001""")
+insert.set_value('description', """React App build folder""")
+insert.set_value('key', """refinejs/index""")
+insert.set_value('value', """/refinejs/sample_app/build/index.html""")
+#-- End Entry --#
+
