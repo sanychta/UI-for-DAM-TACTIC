@@ -8,3 +8,5 @@
 ![Episodes](/img/episodes.png)
 ![View episodes](/img/episodes_view.png)
 ![User detail](/img/user_detail.png)
+![Add new](/img/create_assets.png)
+![Edit](/img/edit_categories.png)
