@@ -91,7 +91,7 @@ export const CreateCategoryAsset: React.FC<
         >
             <Create
                 saveButtonProps={saveButtonProps}
-                cardHeaderProps={{
+                headerProps={{
                     title: t("categories.buttons.create"),
                     titleTypographyProps: { variant: "h5" },
                     avatar: (
@@ -104,7 +104,7 @@ export const CreateCategoryAsset: React.FC<
                     ),
                     action: null,
                 }}
-                cardProps={{ sx: { overflowY: "scroll", height: "100vh" } }}
+                wrapperProps={{ sx: { overflowY: "scroll", height: "100vh" } }}
             >
                 <Stack>
                     <Box

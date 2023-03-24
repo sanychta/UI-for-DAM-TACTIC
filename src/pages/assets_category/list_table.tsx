@@ -42,9 +42,10 @@ import {
 
 import {
     Edit,
-    AddCircleOutline,
-    RemoveCircleOutline,
 } from "@mui/icons-material";
+
+import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
+import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 
 import { IAssetsCategory, IAssets } from "../../interfaces";
 
@@ -57,12 +58,12 @@ export const AssetsCategoryList: React.FC<IResourceComponentsProps> = () => {
     const createDrawerFormProps = useModalForm<IAssetsCategory, HttpError, IAssetsCategory>({
         refineCoreProps: {
             redirect: false,
-            action: "create"
+            action: "create",
         },
     });
 
     const {
-        modal: { show: showCreateDrawer, },
+        modal: { show: showCreateDrawer, title},
     } = createDrawerFormProps;
 
     const editDrawerFormProps = useModalForm<IAssetsCategory, HttpError, IAssetsCategory>({
@@ -106,9 +107,9 @@ export const AssetsCategoryList: React.FC<IResourceComponentsProps> = () => {
                         <Stack direction="row" alignItems="center" spacing={3}>
                             <IconButton onClick={() => row.toggleExpanded()}>
                                 {row.getIsExpanded() ? (
-                                    <RemoveCircleOutline fontSize="small" />
+                                    <KeyboardArrowDownOutlinedIcon fontSize="small" />
                                 ) : (
-                                    <AddCircleOutline fontSize="small" />
+                                    <KeyboardArrowRightOutlinedIcon fontSize="small" />
                                 )}
                             </IconButton>
                             <Typography>{getValue() as string}</Typography>
@@ -181,8 +182,10 @@ export const AssetsCategoryList: React.FC<IResourceComponentsProps> = () => {
             <CreateCategoryAsset {...createDrawerFormProps} />
             <EditCategoryAsset {...editDrawerFormProps} />
             <List 
-                wrapperProps={{ sx: { paddingX: { xs: 2, md: 0 } } }}
-                headerProps={{ action: <CreateButton onClick={() => showCreateDrawer()} /> }}
+                wrapperProps={{ sx: { paddingX: { xs: 2, md: 0 }, 
+                    // paddingBottom: "none" 
+                } }}
+                headerProps={{ action: <CreateButton onClick={() => {  return showCreateDrawer()}} /> }}
             >
                 <form > 
                     {/* onSubmit={handleSubmit(onFinish)}> */}
@@ -257,10 +260,7 @@ export const AssetsCategoryList: React.FC<IResourceComponentsProps> = () => {
                     </TableContainer>
                     <TablePagination
                         component="div"
-                        rowsPerPageOptions={[
-                            5,
-                            10,
-                            25,
+                        rowsPerPageOptions={[5, 10, 25,
                             {
                                 label: "All",
                                 value: tableQueryResult.data?.total ?? 100,
@@ -269,6 +269,7 @@ export const AssetsCategoryList: React.FC<IResourceComponentsProps> = () => {
                         showFirstButton
                         showLastButton
                         count={pageCount || 0}
+                        // padding="none"
                         rowsPerPage={pagination?.pageSize || 10}
                         page={pagination?.pageIndex || 0}
                         onPageChange={(_, newPage: number) => setPageIndex(newPage)}
@@ -319,9 +320,7 @@ const AssetsCategoryTable: React.FC<{ record: IAssetsCategory }> = ({ record }) 
         () => [
             {
                 field: "image",
-                renderHeader: function render() {
-                    return <></>;
-                },
+                headerName: "Preview",
                 filterable: false,
                 filterOperators: undefined,
                 disableColumnMenu: true,
@@ -331,12 +330,12 @@ const AssetsCategoryTable: React.FC<{ record: IAssetsCategory }> = ({ record }) 
                         <Avatar
                             alt={`${row.name}`}
                             src={row.image.url}
-                            sx={{ width: 74, height: 74 }}
+                            sx={{ width: 48, height: 48 }}
                         />
                     );
                 },
                 flex: 1,
-                minWidth: 100,
+                maxWidth: 85,
             },
             {
                 field: "id",
@@ -346,13 +345,13 @@ const AssetsCategoryTable: React.FC<{ record: IAssetsCategory }> = ({ record }) 
                 field: "name",
                 headerName: t("assets.fields.name"),
                 flex: 1,
-                minWidth: 180,
+                // minWidth: 180,
             },
             {
                 field: "description",
                 headerName: t("assets.fields.description"),
                 flex: 1,
-                minWidth: 180,
+                // minWidth: 180,
             },
             {
                 field: "actions",
@@ -370,7 +369,7 @@ const AssetsCategoryTable: React.FC<{ record: IAssetsCategory }> = ({ record }) 
                     ];
                 },
                 flex: 0.5,
-                minWidth: 100,
+                // minWidth: 100,
             },
         ],
         [showEditDrawer, t],
@@ -381,12 +380,15 @@ const AssetsCategoryTable: React.FC<{ record: IAssetsCategory }> = ({ record }) 
             headerProps={{
                 title: "Assets",
             }}
+            // wrapperProps={{ sx: {paddingBottom: "0px"}}}
         >
             <DataGrid
                 {...dataGridProps}
                 columns={columns}
-                rowHeight={80}
+                headerHeight={40}
+                rowHeight={50}
                 autoHeight
+                // sx={{paddingBottom: "0px"}}
                 density="comfortable"
                 rowsPerPageOptions={[5, 10, 25, 50, 100]}
                 onRowClick={(row) => {

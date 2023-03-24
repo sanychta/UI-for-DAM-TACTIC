@@ -84,7 +84,7 @@ const TaskShow: React.FC<IResourceComponentsProps> = () => {
             headerName: t("task.fields.id"),
             renderCell: function render({ row }) {
                 return (
-                    <Button onClick={() => { show("task", row.id) }} >
+                    <Button onClick={() => { show("tasks", row.id) }} >
                         {row.id}
                     </Button>
                 );
@@ -171,20 +171,24 @@ const TaskShow: React.FC<IResourceComponentsProps> = () => {
                 item 
                 xs={12} lg={12}
             >
-                <Stack 
-                    spacing={2}
-                    justifyContent="flex-start"
-                    alignItems="left"
-                    flexWrap="wrap"
-                    padding={1}
-                    direction="row"
-                    gap={2}
+                <Stack direction="column" spacing={2}
+                    // spacing={2}
+                    // justifyContent="flex-start"
+                    // alignItems="left"
+                    // flexWrap="wrap"
+                    // padding={1}
+                    // direction="row"
+                    // gap={2}
+                >
+                <List
+                    headerProps={{ title: t("task.task") }}
+                    canCreate={false}
                 >
                     <IconButton 
                         onClick={goBack}>
                         <ArrowBackIcon />
                     </IconButton>
-                    <Typography
+                    {/* <Typography
                         variant="h5"
                         align="left"
                     >
@@ -199,15 +203,16 @@ const TaskShow: React.FC<IResourceComponentsProps> = () => {
                         }}
                         size="small"
                         placeholder={t("task.filters.status")}
+                    /> */}
+                    <DataGrid
+                        {...dataGridProps}
+                        headerHeight={40}
+                        columns={columns}
+                        autoHeight
+                        rowsPerPageOptions={[5, 10, 20, 100]}
                     />
+                </List>
                 </Stack>
-                <DataGrid
-                    {...dataGridProps}
-                    headerHeight={40}
-                    columns={columns}
-                    autoHeight
-                    rowsPerPageOptions={[5, 10, 20, 100]}
-                />
             </Grid>
         </Grid>
     );

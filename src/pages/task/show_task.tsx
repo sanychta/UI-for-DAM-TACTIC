@@ -27,6 +27,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import EditIcon from "@mui/icons-material/Edit";
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 // import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import SendIcon from '@mui/icons-material/Send';
 import {
@@ -440,7 +441,7 @@ export const TaskShow: React.FC<IResourceComponentsProps> = () => {
                             text={task?.assigned}
                         />
                         <TaskInfoText
-                            icon={<LocalPhoneOutlined />}
+                            icon={<InfoOutlinedIcon />}
                             text={task?.code}
                         />
                     </Stack>

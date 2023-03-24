@@ -16,6 +16,11 @@ import {
   ReadyPage,
   ErrorComponent,
 } from "@pankod/refine-mui";
+import MovieFilterTwoToneIcon from '@mui/icons-material/MovieFilterTwoTone';
+import TheatersTwoToneIcon from '@mui/icons-material/TheatersTwoTone';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import BoxIcon from './contexts/box_icon';
 
 import { authProvider } from "./authProvider";
 
@@ -184,12 +189,14 @@ function App() {
                         // create: PostCreate,
                         // edit: PostEdit,
                         show: LoginShow,
+                        icon: <GroupOutlinedIcon />,
                     },
                     {
                         name: "assets", // "dolly3d/assets&dolly3d",
                         options: { label: String(t("assets.assets"))},
                         list: AssetsList,
                         show: AssetShow,
+                        icon: <BoxIcon />,
                         // canDelete: true,
                         // create: CreateAsset,
                     },
@@ -197,6 +204,7 @@ function App() {
                         name: "categories", // "complex/assets_category&dolly3d",
                         options: { label: String(t("categories.categories")) },
                         list: AssetsCategoryList,
+                        icon: <CategoryOutlinedIcon />
                         // create: AssetCategoryCreate,
                     },
                     {
@@ -204,6 +212,7 @@ function App() {
                         options: { label: String(t("scenes.scenes")) },
                         list: ScenesList,
                         show : SceneShow,
+                        icon: <MovieFilterTwoToneIcon />,
                         // create: AssetCategoryCreate,
                     },
                     {

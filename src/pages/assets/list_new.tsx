@@ -1,48 +1,25 @@
 import React from "react";
-import { useEffect } from "react";
 import {
     useTranslate,
     IResourceComponentsProps,
     useTable,
-    getDefaultFilter,
     HttpError,
-    CrudFilters,
-    // CanAccess,
     // useNavigation,
 } from "@pankod/refine-core";
 import { 
-    // useForm, 
     useModalForm 
 } from "@pankod/refine-react-hook-form";
 import {
     Grid,
     Paper,
     Typography,
-    // InputBase,
-    InputAdornment,
-    TextField,
-    // IconButton,
     Stack,
     Pagination,
     CreateButton,
 } from "@pankod/refine-mui";
 
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { AssetsItem, EditAsset, CategoryFilter, CreateAsset } from "../../components";
 import { IAssets } from "../../interfaces";
-
-const saveFiltersToLocalStorage = (
-    searchFilter?: string,
-) => {
-    localStorage.setItem('SearchFilterAssetsBrowser', JSON.stringify(searchFilter));
-};
-
-const loadFiltersFromLocalStorage = (
-) => {
-    return [
-        JSON.parse(String(localStorage.getItem('SearchFilterAssetsBrowser'))),
-    ]
-};
 
 export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     
@@ -53,9 +30,9 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     const { tableQueryResult, pageCount, setCurrent, filters, setFilters } =
         useTable<IAssets>({
             resource: "assets",
-            initialPageSize: 12,
+            initialPageSize: 16,
         });
-
+    
     const createDrawerFormProps = useModalForm<IAssets, HttpError, IAssets>({
         refineCoreProps: { 
             redirect: false,
@@ -80,16 +57,6 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
 
     const assets: IAssets[] = tableQueryResult.data?.data || [];
 
-    // useEffect(() => {
-    //     const loadFilters = loadFiltersFromLocalStorage();
-    //     const searchFilter: CrudFilters = [{
-    //         field: "name|keywords|description",
-    //         operator: "contains",
-    //         value: loadFilters[0] !== null ? loadFilters[0] : ""
-    //     }];
-    //     setFilters(searchFilter);
-    // }, []);
-
     return (
         <>
             <CreateAsset {...createDrawerFormProps} />
@@ -102,6 +69,10 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                 }}
             >
                 <Grid container columns={16}>
+                    <CategoryFilter
+                        setFilters={setFilters}
+                        filters={filters}
+                    />
                     <Grid item xs={16} md={12}>
                         <Stack
                             display="flex"
@@ -115,51 +86,6 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                             <Typography variant="h5">
                                 {t("assets.assets")}
                             </Typography>
-                            <Paper
-                                component="text"
-                                sx={{
-                                    // display: "flex",
-                                    alignItems: "center",
-                                    width: 400,
-                                }}
-                            >
-                                <TextField
-                                    sx={{
-                                        ml: 0, 
-                                        flex: 0,
-                                        // alignItems: "center",
-                                        width: 400,
-                                    }}
-                                    placeholder={t("assets.assetsSearch")}
-                                    InputProps={{
-                                        startAdornment: (
-                                            <InputAdornment position="start">
-                                                <SearchOutlinedIcon />
-                                            </InputAdornment>
-                                        ),
-                                    }}
-                                    value={getDefaultFilter(
-                                        "id",
-                                        filters,
-                                        "contains",
-                                    )}
-                                    // value={filters}
-                                    onChange={(
-                                        e: React.ChangeEvent<HTMLInputElement>,
-                                    ) => {
-                                        const searchFilter: CrudFilters = [{
-                                            field: "name|keywords|description",
-                                            operator: "contains",
-                                            value:
-                                                e.target.value !== ""
-                                                    ? e.target.value
-                                                    : undefined,
-                                        }];
-                                        saveFiltersToLocalStorage(e.target.value !== '' ? e.target.value : '');
-                                        setFilters(searchFilter);
-                                    }}
-                                />
-                            </Paper>
                             <CreateButton
                                 onClick={() => showCreateDrawer()}
                                 variant="contained"
@@ -174,7 +100,7 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                                     <Grid
                                         item
                                         xs={12}
-                                        md={6}
+                                        md={4}
                                         lg={4}
                                         xl={3}
                                         key={assets.id}
@@ -218,27 +144,6 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                                 setCurrent(page);
                             }}
                         />
-                    </Grid>
-                    <Grid
-                        item
-                        sm={0}
-                        md={4}
-                        sx={{
-                            display: {
-                                xs: "none",
-                                md: "block",
-                            },
-                        }}
-                    >
-                        <Stack padding="8px">
-                            <Typography variant="subtitle1">
-                                {t("assets.tagFilterDescription")}
-                            </Typography>
-                            <CategoryFilter
-                                setFilters={setFilters}
-                                filters={filters}
-                            />
-                        </Stack>
                     </Grid>
                 </Grid>
             </Paper>

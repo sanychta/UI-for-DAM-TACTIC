@@ -49,7 +49,7 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
         // setFilters
     } = useDataGrid<ITask, HttpError, ITask>(
         {
-            initialPageSize: 10,
+            initialPageSize: 15,
             initialSorter: [
                 {
                     field: "id",
@@ -164,14 +164,14 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
             {
                 field: "id",
                 headerName: "ID",
-                type: "number",
+                // type: "number",
                 width: 90,
                 // hide: true,
             },
             {
                 field: "priority",
                 headerName: t("task.fields.priority"),
-                width: 100,
+                // width: 100,
                 maxWidth: 100,
                 flex: 1,
                 // hide: true,
@@ -179,30 +179,30 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
             {
                 field: "description",
                 headerName: t("task.fields.description"),
-                width: 200,
-                maxWidth: 200,
+                // width: 200,
+                // maxWidth: 200,
                 flex: 0.5,
             },
             {
                 field: "status",
                 headerName: t("task.fields.status"),
-                width: 150,
-                maxWidth: 150,
+                // width: 150,
+                // maxWidth: 150,
                 flex: 0.5,
             },
             {
                 field: "discussion",
                 headerName: t("task.fields.discussion"),
-                minWidth: 100,
-                maxWidth: 200,
+                // minWidth: 100,
+                // maxWidth: 200,
                 flex: 0.5
             },
             {
                 field: "assigned",
                 align: "center",
                 headerName: t("task.fields.assigned"),
-                width: 150,
-                maxWidth: 150,
+                // width: 150,
+                // maxWidth: 150,
                 flex: 0.5,
             },
         ],
@@ -351,7 +351,8 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
                         }}
                         filterModel={undefined}
                         autoHeight
-                        rowsPerPageOptions={[10, 20, 50, 100]}
+                        rowHeight={30}
+                        rowsPerPageOptions={[10, 15, 25, 50, 100]}
                         density="comfortable"
                         onRowClick={(row) => {
                             // console.log("🚀 ~ file: list_tasks.tsx:340 ~ row", row);

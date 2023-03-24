@@ -166,7 +166,8 @@
             "assigned": "Assigned",
             "status": "Status",
             "process": "Process",
-            "priority": "Priority"
+            "priority": "Priority",
+            "discussion": "Discussion"
         },
         "filters": {
             "status": "Status"

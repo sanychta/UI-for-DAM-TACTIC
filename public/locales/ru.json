@@ -212,7 +212,8 @@
             "assigned": "Назначен",
             "status": "Статус",
             "process": "Процесс",
-            "priority": "Приоритет"
+            "priority": "Приоритет",
+            "discussion": "Переписка"
         },
         "filters": {
             "status": "Статус"
