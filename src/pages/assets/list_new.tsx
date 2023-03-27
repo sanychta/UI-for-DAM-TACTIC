@@ -30,7 +30,7 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     const { tableQueryResult, pageCount, setCurrent, filters, setFilters } =
         useTable<IAssets>({
             resource: "assets",
-            initialPageSize: 16,
+            initialPageSize: 15,
         });
     
     const createDrawerFormProps = useModalForm<IAssets, HttpError, IAssets>({
@@ -101,11 +101,8 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                                         item
                                         xs={12}
                                         md={4}
-                                        lg={4}
-                                        xl={3}
                                         key={assets.id}
                                         sx={{ padding: "8px" }}
-                                        // onClick={() => show("assets", assets.id)}
                                     >
                                         <AssetsItem
                                             assets={assets}

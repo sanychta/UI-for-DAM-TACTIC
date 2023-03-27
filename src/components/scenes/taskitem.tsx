@@ -199,6 +199,7 @@ type CaptionName = {
     scene_code?: string;
     color?: string;
 };
+
 const ItemCaption: React.FC<CaptionName> = (items) => {
     const save =() =>{
         Update_save({ name: items.name, scene_code: items.scene_code })
@@ -257,6 +258,7 @@ const ItemCaption: React.FC<CaptionName> = (items) => {
 }
 
 const StatusCombo: React.FC<CaptionName> =(items) => {
+    
     const [open, setOpen] = React.useState(false);
     const [options, setOptions] = React.useState<readonly IPipeline[]>([]);
     const [color_value, setValue] = React.useState<IPipeline | null>(null);
@@ -546,6 +548,8 @@ type SceneCode = {
 
 const Item2: React.FC<SceneCode> = (scene_code) => {
     var process = JSON.parse(String(localStorage.getItem('PIPELINE_PROCESS')));
+    console.log("🚀 ~ file: taskitem.tsx:551 ~ process:", process)
+    
     // setTimeout(async function () {
     //     const reloaded = localStorage.getItem('reloaded') ?? false;
     //     if (reloaded === 'false') {
@@ -556,6 +560,9 @@ const Item2: React.FC<SceneCode> = (scene_code) => {
     return <React.Suspense fallback="Loading...">
         {
             process.map((items:any) => {
+
+                console.log("🚀 ~ file: taskitem.tsx:561 ~ process.map ~ items:", items)
+
                 const task_id = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element:any)=>element.process===items?.name);
                 var assigned_group = '';
                 if (!('assigned_login_group' in items)&&(items?.name!=='assets')) {

@@ -48,7 +48,7 @@ export const AssetsItem: React.FC<AssetItem> = ({
 
     const { mutate: mutateDelete } = useDelete();
     
-    const { id, name, description, image, keywords } = assets; // code, 
+    const { id, name, description, image, keywords } = assets; 
 
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -217,9 +217,7 @@ export const AssetsItem: React.FC<AssetItem> = ({
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {/* <Box sx={{ margin: 0.2, placement: "top", padding: 0.2, boxShadow: 1, borderRadius: 2, p: 1, }}> */}
-                                {name}
-                            {/* </Box> */}
+                            {name}
                         </Typography>
                     </Tooltip>
                     <Tooltip title={description}>
@@ -240,9 +238,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                                 {description}
                         </Typography>
                     </Tooltip>
-                    {/* <Typography
-                        variant="h6"
-                    >{code}</Typography> */}
                     <Tooltip title={keywords} placement="top">
                         <Typography
                             sx={{

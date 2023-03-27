@@ -155,6 +155,7 @@ export const getAcronym = (name: string) => {
         .toLocaleUpperCase();
     return abbr !== undefined ? abbr : null;
 };
+
 export const getColorHash = (name: string) => {
     return new ColorHash({ saturation: 0.3, lightness: 0.5 }).hex(name);
 };
