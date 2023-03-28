@@ -21,7 +21,9 @@ import {
 } from "@pankod/refine-mui";
 import { 
     SaveUsersInLS, 
-    HeaderLinks 
+    HeaderLinks,
+    SaveLoginInGroup,
+    SaveLoginGroup,
 } from "../../conf";
 
 import {
@@ -146,6 +148,8 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
                         density="comfortable"
                         onRowClick={(row) => {
                             SaveUsersInLS();
+                            SaveLoginInGroup();
+                            SaveLoginGroup();
                             show("tasks", row.id);
                         }}
                     />

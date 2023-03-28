@@ -103,7 +103,7 @@ const joinMessageNote = (note:any[], message:any[]) => {
 
 type TaskNote = {
     process?: string;
-    status_colors?: any[];
+    status_colors: any[];
     search_code?: string;
     search_type?: string;
 }
@@ -165,7 +165,7 @@ const TaskNotes: React.FC<TaskNote> = (item) => {
                 const author = user_list.filter((element: any) => element?.code === out[j]?.login)[0];
                 const msg = {
                     avatar: author?.image,
-                    bg_color: item.status_colors?.filter((el: any) => el?.name === out[j]?.message)[0]?.color ?? "#3636",
+                    bg_color: item.status_colors?.length > 0 ? item.status_colors?.filter((el: any) => el?.name === out[j]?.message)[0]?.color ?? "#3636" : "#3636",
                     left: out[j]?.login === current_user?.code ? true : false,
                     code: out[j]?.message_code,
                     id: out[j]?.id,
@@ -276,7 +276,7 @@ export const TaskShow: React.FC<IResourceComponentsProps> = () => {
     const {
         queryResult: { data, isLoading },
     } = useShow<ITask>();
-    const task = data?.data;
+    const task = data?.data as ITask;
 
     const {data: scenes} = useList({
         resource: 'scenes',
@@ -294,7 +294,7 @@ export const TaskShow: React.FC<IResourceComponentsProps> = () => {
     const scene = scenes?.data[0];
     
     const { data: pipe } = useList<IPipeline>(get_pipe_options(task?.pipeline_code));
-    const pipe_data = pipe?.data;
+    const pipe_data = pipe?.data || [];
 
     if (isLoading) {
         return <Box sx = {{ display: 'flex', justifyContent: 'center', width: '100%', height: '100%'}}>
@@ -342,23 +342,26 @@ export const TaskShow: React.FC<IResourceComponentsProps> = () => {
                 </Paper>
             </Grid>
             <Grid item xs={12} lg={9}>
-                <Stack id="main-note-container" direction="column" spacing={0.5} height="60vh">
+                <Stack id="main-note-container" direction="column" spacing={0.5} height="55vh">
                     <Box id="note-caption-box" sx={{ display: "flex", height:"100%", width: "100%"}}>
                         <Stack width="100%">
                             <Paper sx={{width: "100%", padding: '5px'}}>
                                 <Typography variant="caption"> {task?.process} </Typography>
                                 <Box display="flex" flexDirection="row" width="100%">
                                     <Box display="flex" flexDirection="column" width="70%">
-                                        <Typography variant="subtitle2"> {scene?.name} </Typography>
+                                        <Typography variant="subtitle1"> {scene?.name} </Typography>
+                                        <Divider sx={{ height: "10px" }} />
                                         <TextField 
                                             multiline 
                                             rows={4}
                                     />
                                     </Box>
                                     <Box display="flex" flexDirection="column" width="30%" padding="10px">
-                                        <StatusCombo process={task?.process} scene_code={task?.search_code} pipeline_code={task?.pipeline_code} />
+                                        <StatusCombo current_task={task} />
                                         <Divider sx={{height: "10px"}} />
                                         <UsersList process={task?.process} assigned_user={task?.assigned} />
+                                        <Divider sx={{ height: "10px" }} />
+                                        <BidDates current_task={task} />
                                     </Box>
                                 </Box>
                             </Paper>
@@ -565,115 +568,63 @@ const UserAvatar:React.FC<AvatarInfo> = (avatar)=> {
     )
 }
 
-
 type StatusInfo = {
-    process: string | undefined;
-    scene_code: string | undefined;
-    pipeline_code: string | undefined;
+    current_task?: ITask;
 }
 
-const StatusCombo: React.FC<StatusInfo> = (items) => {
-    const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState<readonly IPipeline[]>([]);
-    const [color_value, setValue] = React.useState<IPipeline | null>(null);
-    const loading = open && options.length === 0;
-    const task = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element: any) => element.process === items?.process);
-    const def_value_status = task?.map((val: any) => val?.status);
-    const { data: pipe } = useList<IPipeline>(get_pipe_options(items?.pipeline_code));
-    const pipe_data = pipe?.data;
+const StatusCombo: React.FC<StatusInfo> = (task) => {
+    
+    const [status, setStatus] = useState<string>(task.current_task?.status || '')
+
+    const { data: pipe } = useList<IPipeline>(get_pipe_options(task.current_task?.pipeline_code));
+    const pipe_data = pipe?.data || [];
+    
     var bg_color_status = '';
-    if (pipe_data !== undefined) {
-        if (pipe_data.length > 0) {
-            for (let i = 0; i < pipe_data.length; i++) {
-                if (def_value_status !== undefined) {
-                    if (pipe_data[i].name === def_value_status[0]) {
-                        bg_color_status = ColorLuminance(pipe_data[i].color, -0.5);
-                        break;
-                    }
+    if (pipe_data.length > 0) {
+        for (let i = 0; i < pipe_data.length; i++) {
+            if ( status !== '') {
+                if (pipe_data[i].name === status) {
+                    bg_color_status = ColorLuminance(pipe_data[i].color, -0.5);
+                    break;
                 }
             }
         }
     };
-    React.useEffect(() => {
-        const pipes = pipe?.data !== undefined ? pipe?.data : [];
-        let active = true;
-        if (!loading) {
-            return undefined;
-        }
-        if (active) {
-            setOptions([...pipes]);
-        }
-        return () => {
-            active = false;
-        };
-    }, [bg_color_status, pipe, loading]);
-    React.useEffect(() => {
-        if (!open) {
-            setOptions([]);
-        }
-    }, [open]);
-    if (items.process !== 'assets') {
-        return <Box
-            id={items.process}
+
+    return (
+        <Box
+            id={task.current_task?.process}
             sx={{
                 display: "flex",
                 justifyContent: "center",
                 textAlign: "center",
                 borderRadius: 1,
-                bgcolor: bg_color_status !== undefined ? bg_color_status : null,
+                bgcolor: bg_color_status !== '' ? bg_color_status : null,
                 spacing: 0.5,
                 padding: '0px',
             }}
         >
             <Autocomplete
-                id={items?.process + "-comboStatus"}
-                open={open}
-                onOpen={() => { setOpen(true); }}
-                onClose={() => { setOpen(false); }}
-                isOptionEqualToValue={(option, value) => option?.name === value?.name}
-                getOptionLabel={(option) => option?.name}
-                options={options}
-                loading={loading}
+                id={task.current_task?.process + "-comboStatus"}
+                options={pipe_data.map((option: IPipeline) => option.name)}
                 size="small"
-                componentsProps={{ clearIndicator: { size: 'small', sx: { fontSize: '0.5rem' } } }}
                 sx={{
-                    // '& label': {
-                    //     fontSize: '10px',
-                    //     lineHeight: '1rem',
-                    // },
-                    // '& input': {
-                    //     fontSize: '10px',
-                    //     lineHeight: '1rem',
-                    // },
                     padding: '0px',
                 }}
+                value={status}
                 fullWidth
-                onChange={(event: any, newValue: IPipeline | null, reason, details) => {
-                    const elem = document.getElementById(String(items?.process));
-                    setValue(newValue);
-                    if (elem !== null) { elem.style.backgroundColor = ColorLuminance(String(newValue?.color), -0.5); };
+                onChange={(event: any, newValue: string | null, reason, details) => {
+                    setStatus(String(newValue));
                 }}
                 renderInput={(params) =>
                     <TextField
                         {...params}
-                        label={def_value_status !== undefined ? def_value_status?.length > 0 ? def_value_status[0] : 'Status' : 'Status'}
-                        value={def_value_status !== undefined ? def_value_status[0] : null}
-                        InputProps={{
-                            ...params.InputProps,
-                            endAdornment: (
-                                <React.Fragment>
-                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                    {params.InputProps.endAdornment}
-                                </React.Fragment>
-                            ),
-                        }}
+                        label="Status"
                     />
                 }
             />
         </Box>
-    } else {
-        return <></>
-    }
+    )
 }
 
 type AssignedGroup = {
@@ -684,7 +635,8 @@ type AssignedGroup = {
 
 const UsersList: React.FC<AssignedGroup> = (data) => {
     
-    const allProcess = JSON.parse(String(localStorage.getItem('ALL_PIPELINE_PROCESSES')));
+    let allProcess:any[] = [];
+    allProcess = JSON.parse(String(localStorage.getItem('ALL_PIPELINE_PROCESSES')));
     const currentProcess = allProcess.filter((elem: any) => elem.name === data.process)[0];
     const assignedGroup = currentProcess.assigned_login_group;
     
@@ -726,16 +678,18 @@ const UsersList: React.FC<AssignedGroup> = (data) => {
     )
 }
 
-
 type Bid_Dates = {
     bid_date?: string;
     id_name?: string;
     process?: string;
+    bid_date_start?: string;
+    bid_date_end?: string;
+    current_task?: ITask;
 }
 
 const BidDate: React.FC<Bid_Dates> = (date) => {
     const st_date = date.bid_date !== undefined ? new Date(date.bid_date) : null;
-    const [bid_Date, setValue] = React.useState<Dayjs | null>(dayjs(st_date));
+    const [bid_Date, setValue] = React.useState<Dayjs | null>(dayjs(date.bid_date));
     const [locale] = React.useState<typeof locales[number]>('ru');
 
     return (
@@ -746,45 +700,31 @@ const BidDate: React.FC<Bid_Dates> = (date) => {
                 slotProps={{
                     openPickerButton: { size: 'small', sx: { fontSize: 'small' } },
                     dialog: { sx: { fontSize: '0.6rem' } },
-                    textField: { id: date.id_name, variant: "standard", size: "small", sx: { width: 125 } }
+                    textField: { id: date.id_name, size: "small"}
                 }}
                 onChange={(newValue) => {
                     setValue(newValue);
                     const save_box = document.getElementById(date.process + '-box');
                     if (save_box !== null) { save_box.style.display = 'flex' }
                 }}
-            // renderInput={(params) => <TextField id={date.id_name} variant="standard" size="small" sx={{ width: 125 }} {...params} />}
             />
         </LocalizationProvider>
     )
 }
 
-const BidDates: React.FC<Bid_Dates> = (data) => {
-    if (data.id_name !== 'assets') {
-        var task = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element: any) => element.process === data?.process);
-        if (task.length > 0) {
-            task = task[0];
-        };
-        return <Box
-            sx={{
-                display: "flex",
-                justifyContent: "center",
-                padding: '2px',
-            }}
-        >
-            <Stack
-                sx={{
-                    '& .MuiInputBase-root': {
-                        fontSize: '0.8rem',
-                    },
-                }}
-                direction="column"
-            >
-                <BidDate bid_date={task?.bid_start_date} id_name={data.id_name + '-bid_start'} process={data.process} />
-                <BidDate bid_date={task?.bid_end_date} id_name={data.id_name + '-bid_end'} process={data.process} />
-            </Stack>
-        </Box>
-    } else {
-        return <></>
-    }
+const BidDates: React.FC<Bid_Dates> = (task) => {
+
+    return <Box
+        sx={{
+            display: "flex",
+            justifyContent: "center",
+            padding: '0px',
+            width: '100%',
+        }}
+    >
+        <Stack direction="column" width="100%" spacing={0.5} >
+            <BidDate bid_date={task.current_task?.bid_start_date} id_name={task.current_task?.process + '-bid_start'} process={task.current_task?.process} />
+            <BidDate bid_date={task.current_task?.bid_end_date} id_name={task.current_task?.process + '-bid_end'} process={task.current_task?.process} />
+        </Stack>
+    </Box>
 }

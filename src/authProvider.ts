@@ -23,6 +23,7 @@ import {
     USER_PHONE,
     USER_NAME,
     USER_ROLE,
+    SaveLoginInGroup,
 } from "./conf";
 
 // import { redirectPage } from "@pankod/refine-core/dist/definitions/helpers";
@@ -44,6 +45,7 @@ const save_user_info = (data: any) => {
     localStorage.setItem("LOGIN_IN_GROUP_LIST", "[]");
     localStorage.setItem("GROUP_LIST", "[]");
     localStorage.setItem("USERS_LIST", "[]");
+    SaveLoginInGroup();
     const user_groups = localStorage.getItem(USER_GROUP);
     const groups = user_groups?.split("|");
     var role = '';

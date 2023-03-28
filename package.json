@@ -38,6 +38,7 @@
     "react-scripts": "^5.0.1",
     "recharts": "^2.4.3",
     "rifm": "^0.12.1",
+    "source-map-explorer": "^2.5.3",
     "styled-components": "^5.3.8",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^3.3.0"
@@ -52,6 +53,7 @@
   },
   "scripts": {
     "dev": "react-scripts start",
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
