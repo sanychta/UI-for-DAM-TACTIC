@@ -354,6 +354,7 @@ export const TaskShow: React.FC<IResourceComponentsProps> = () => {
                                         <TextField 
                                             multiline 
                                             rows={4}
+                                            value={task?.description}
                                     />
                                     </Box>
                                     <Box display="flex" flexDirection="column" width="30%" padding="10px">
@@ -682,13 +683,11 @@ type Bid_Dates = {
     bid_date?: string;
     id_name?: string;
     process?: string;
-    bid_date_start?: string;
-    bid_date_end?: string;
+    label?: string;
     current_task?: ITask;
 }
 
 const BidDate: React.FC<Bid_Dates> = (date) => {
-    const st_date = date.bid_date !== undefined ? new Date(date.bid_date) : null;
     const [bid_Date, setValue] = React.useState<Dayjs | null>(dayjs(date.bid_date));
     const [locale] = React.useState<typeof locales[number]>('ru');
 
@@ -697,10 +696,11 @@ const BidDate: React.FC<Bid_Dates> = (date) => {
             <DatePicker
                 format="DD.MM.YYYY"
                 value={bid_Date}
+                label={date.label || ''}
                 slotProps={{
                     openPickerButton: { size: 'small', sx: { fontSize: 'small' } },
                     dialog: { sx: { fontSize: '0.6rem' } },
-                    textField: { id: date.id_name, size: "small"}
+                    textField: { id: date.id_name, size: "small" }
                 }}
                 onChange={(newValue) => {
                     setValue(newValue);
@@ -723,8 +723,18 @@ const BidDates: React.FC<Bid_Dates> = (task) => {
         }}
     >
         <Stack direction="column" width="100%" spacing={0.5} >
-            <BidDate bid_date={task.current_task?.bid_start_date} id_name={task.current_task?.process + '-bid_start'} process={task.current_task?.process} />
-            <BidDate bid_date={task.current_task?.bid_end_date} id_name={task.current_task?.process + '-bid_end'} process={task.current_task?.process} />
+            <BidDate 
+                bid_date={task.current_task?.bid_start_date} 
+                id_name={task.current_task?.process + '-bid_start'} 
+                process={task.current_task?.process}
+                label="Bid start date"
+            />
+            <BidDate 
+                bid_date={task.current_task?.bid_end_date} 
+                id_name={task.current_task?.process + '-bid_end'} 
+                process={task.current_task?.process}
+                label="Bid end date"
+            />
         </Stack>
     </Box>
 }

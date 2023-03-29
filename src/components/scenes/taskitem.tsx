@@ -460,7 +460,7 @@ const AssetsChart: React.FC<ChartData> = (data) => {
                 <text
                     x={52}
                     y={78}
-                    fill="white"
+                    fill="text.primary"
                     textAnchor={"center"}
                     dominantBaseline="central"
                 >
@@ -548,7 +548,6 @@ type SceneCode = {
 
 const Item2: React.FC<SceneCode> = (scene_code) => {
     var process = JSON.parse(String(localStorage.getItem('PIPELINE_PROCESS')));
-    console.log("🚀 ~ file: taskitem.tsx:551 ~ process:", process)
     
     // setTimeout(async function () {
     //     const reloaded = localStorage.getItem('reloaded') ?? false;
@@ -560,9 +559,6 @@ const Item2: React.FC<SceneCode> = (scene_code) => {
     return <React.Suspense fallback="Loading...">
         {
             process.map((items:any) => {
-
-                console.log("🚀 ~ file: taskitem.tsx:561 ~ process.map ~ items:", items)
-
                 const task_id = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element:any)=>element.process===items?.name);
                 var assigned_group = '';
                 if (!('assigned_login_group' in items)&&(items?.name!=='assets')) {
@@ -649,7 +645,9 @@ const Reviews: React.FC<Review> = (scene_code) => {
             padding: 0.5, 
             borderRadius: 1, 
             // overflow: 'auto', 
-            bgcolor: '#242424' }}>
+            // bgcolor: 'text.secondary' 
+            }}
+        >
             <Grid 
                 container 
                 direction="row"

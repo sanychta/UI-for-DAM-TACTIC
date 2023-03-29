@@ -3,6 +3,7 @@ import {
     IResourceComponentsProps,
     useShow,
     useNavigation,
+    useTranslate,
 } from "@pankod/refine-core";
 import {
     Avatar,
@@ -28,6 +29,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import Reviews from "../../components/scenes/taskitem";
@@ -54,7 +56,6 @@ const SceneInfoText: React.FC<SceneInfoTextProps> = ({ icon, text }) => {
                     justifyContent={{
                         lg: "flex-start",
                     }}
-                    // sx={{ display: text === null ? "none" : "flex" }}
                     gap={1}
                 >
                     {icon}
@@ -71,7 +72,7 @@ const SceneInfoText: React.FC<SceneInfoTextProps> = ({ icon, text }) => {
                     })}
                     </Stack>
                 </Stack>
-                <Divider color="#5b5b5b" sx={{width:"50%", alignSelf: "center"}} />
+                <Divider flexItem sx={{ borderColor: "text.secondary", margin: "10px 20% 10px 20%" }} />
             </Stack>
         )
     }else{
@@ -82,14 +83,12 @@ const SceneInfoText: React.FC<SceneInfoTextProps> = ({ icon, text }) => {
                     justifyContent={{
                         lg: "flex-start",
                     }}
-                    // sx={{ display: text === null ? "none" : "flex" }}
                     gap={1}
                 >
-                    
                     {icon}
                     <Typography variant="body1">{text}</Typography>
                 </Stack>
-                <Divider color="#5b5b5b" sx={{ width: "50%", alignSelf: "center" }} />
+                <Divider flexItem sx={{ borderColor: "text.secondary", margin: "10px 20% 10px 20%" }} />
             </Stack>
     )}
 };
@@ -182,7 +181,6 @@ const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => {
                     <Typography variant="subtitle2">  {'  ' + data.name}  </Typography>
                 </Stack>
             </Stack>
-            <Divider/>
         </Stack>
     )
 };
@@ -215,15 +213,31 @@ const getProcessUsers = ()=>{
     return result;
 };
 
-const UsersInfo: React.FC = ()=>{
-    const users = getProcessUsers();
-    return <>{users.map((data: any) => <UsersInfoText avatar={data.user_avatar} process={{name: data.process, color: data.color}} name={data.proc_user} login={data.user_login} />)}</>
-    
+type UsersList = {
+    users: any[];
+}
+
+const UsersInfo: React.FC<UsersList> = (userList)=>{
+    console.log("🚀 ~ file: show_scenes.tsx:221 ~ users:", userList.users);
+    return (
+        <>
+            {userList.users.map(
+                (data: any) => 
+                    <UsersInfoText
+                        avatar={data.user_avatar}
+                        process={{name: data.process, color: data.color}}
+                        name={data.proc_user}
+                        login={data.user_login}
+                    />
+            )}
+        </>
+    )
 }
 
 export const SceneShow: React.FC<IResourceComponentsProps> = () => {
 
     const { goBack } = useNavigation();
+    const t = useTranslate();
 
     const {
         queryResult: { data, isLoading },
@@ -234,96 +248,49 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
         </Box>
     } else {
     const scene = data?.data;
-    // const t = useTranslate();
     // const { show } = useNavigation();
     return ( 
-        <List
-            headerProps={{
-                sx:{
-                    display: 'flex', 
-                    padding: '4px',
-                },
-                avatar: <IconButton onClick={goBack} > <ArrowBackIcon /> </IconButton>,
-                title: <Typography variant="h4" >{scene?.name}</Typography>,
-            }}    
-            canCreate={false}
-            breadcrumb={<Breadcrumb breadcrumbProps={{sx: { padding:"5px"}}}/>}
-            contentProps={{
-                sx: {
-                    '.MuiCardContent-root': {
-                        padding: '4px',
-                        '&:last-child': {
-                            paddingBottom: 0,
-                        },
-                    }, 
-                    padding: '4px',
-                },
-            }}
-            >
-        <Grid 
-            container 
-            rowSpacing={'2px'}
-            xs={12}
-            justifyContent="start"
-            sx={{
-                padding: '2px',
-                justifyContent: "start",
-            }}
-            spacing={'2px'}
-        >
-            <Grid 
-                item 
-                xs={12} 
-                lg={2}
-                rowSpacing={.5}
-                justifyContent="start"
-                sx={{
-                    padding: '2px',
-                }}
-                spacing={'2px'}
-            >
-                <Paper sx={{ p: 1, justifyContent: "start" }}>
-                    <Stack alignItems="center" spacing={.5} >
-                        <Avatar
-                            src={scene?.image.url}
-                            sx={{ width: 120, height: 120 }}
-                        />
-                        <Typography variant="h6">
-                            {scene?.name}
-                        </Typography>
-                    </Stack>
-                    <ScriptDialog script={scene?.script} />
-                    <Divider sx={{height: "10px"}} />
-                    <Stack spacing={1}>
-                        <SceneInfoText
-                            icon={<DescriptionRoundedIcon />}
-                            text={scene?.description}
-                        />
-                        {/* <Divider color="white" /> */}
-                        <SceneInfoText
-                            icon={<KeyRoundedIcon />}
-                            text={scene?.keywords}
-                        />
-                        {/* <Divider color="white" /> */}
-                        <Divider sx={{height:'10px'}}/>
-                        <UsersInfo />
-                    </Stack>
-                    <Divider />
+        <Grid container spacing={2}>
+            {/* <Grid item width="100%">
+                <Paper>
+                    <Typography variant="subtitle1"> {scene?.name} </Typography>
                 </Paper>
+            </Grid> */}
+            <Grid item xs={12} lg={2}>
+                <Stack>
+                    <Paper sx={{ p: 1, justifyContent: "start"}}>
+                        <Stack alignItems="center" spacing={2} >
+                            <Avatar
+                                src={scene?.image.url}
+                                sx={{ width: 120, height: 120 }}
+                            />
+                            <Typography variant="h6">
+                                {scene?.name}
+                            </Typography>
+                        </Stack>
+                        <ScriptDialog script={scene?.script} />
+                        <Divider flexItem sx={{ borderColor: "text.secondary", margin: "10px 20% 10px 20%" }} />
+                        <Stack spacing={1}>
+                            <SceneInfoText
+                                icon={<DescriptionRoundedIcon />}
+                                text={scene?.description}
+                            />
+                            <SceneInfoText
+                                icon={<KeyRoundedIcon />}
+                                text={scene?.keywords}
+                            />
+                            <UsersInfo users={getProcessUsers() || []} />
+                        </Stack>
+                    </Paper>
+                </Stack>
             </Grid>
-            <Grid 
-                item 
-                xs={12} 
-                lg={10} 
-                rowSpacing={'3px'}
-                justifyContent="start"
-                sx={{
-                    padding: '3px',
-                    justifyContent: "start",
-                }}
-                spacing={'3px'}
-            >
-                <Stack direction="column" spacing={0.5} >
+            <Grid item xs={12} lg={10}>
+                <Stack direction="column" spacing={2} >
+                    <Stack direction="row" width="100%">
+                    <Paper sx={{width: "100%" }}>
+                        <Breadcrumb breadcrumbProps={{ sx: { padding: "5px" } }} />
+                    </Paper>
+                    </Stack>
                     <Reviews 
                         scene_code={scene?.code} 
                         assets={scene?.assets} 
@@ -333,7 +300,6 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                 </Stack>
             </Grid>
         </Grid>
-        </List>
     );
     }
 };
@@ -374,7 +340,6 @@ function ScriptDialog(script:ScriptText) {
             >
             Script
             </Button>
-            <Divider color="#5b5b5b" sx={{ width: "50%", alignSelf: "center" }} />
             <Dialog
                 fullScreen
                 open={open}

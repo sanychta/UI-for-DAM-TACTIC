@@ -22,10 +22,11 @@ import {
 } from "@pankod/refine-mui";
 import { IScenes, HttpError, } from "../../interfaces";
 import { CategoryFilter } from "../../components/scenes";
-import { SaveTaskForScene, SaveLoginInGroup, SaveLoginGroup, SaveUsersInLS, SavePipeProcess } from "../../conf";
+import { SaveTaskForScene, SaveLoginInGroup, SaveLoginGroup, SaveUsersInLS, SavePipeProcess, } from "../../conf";
 import { useModalForm } from "@pankod/refine-react-hook-form";
 import { CreateScene } from "../../components/scenes";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import MovieFilterTwoToneIcon from '@mui/icons-material/MovieFilterTwoTone';
 // import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 
 export const ScenesList: React.FC<IResourceComponentsProps> = () => {
@@ -143,15 +144,14 @@ export const ScenesList: React.FC<IResourceComponentsProps> = () => {
                                     padding: "4px 16px 4px 16px",
                                     border: "none",
                                  },
-                                avatar: <Link href="/tactic/refine_test" alignSelf="center" display="flex" alignContent="center"> <HomeOutlinedIcon color="action" /></Link>,
+                                avatar: <MovieFilterTwoToneIcon />,
                                 action: <CreateButton sx={{ margin: '10px 5px 0px 0px'}} onClick={() => showCreateDrawer()} />,
-                                title: <Typography variant="h4" > { t("scenes.scenes") }</Typography>
+                                title: <Typography variant="h5" > { t("scenes.scenes") }</Typography>
                             }}
                         >
                             <DataGrid
                                 {...dataGridProps}
                                 headerHeight={40}
-                                
                                 columns={columns}
                                 autoHeight
                                 rowsPerPageOptions={[10, 20, 50, 100]}
@@ -181,7 +181,7 @@ export const ScenesList: React.FC<IResourceComponentsProps> = () => {
                                     SaveLoginGroup();
                                     SaveLoginInGroup();
                                     SavePipeProcess(row.row?.pipeline_code);
-                                    SaveTaskForScene(row.row?.code)
+                                    SaveTaskForScene(row.row?.code);
                                     show("scenes", row.id);
                                 }}
                             />

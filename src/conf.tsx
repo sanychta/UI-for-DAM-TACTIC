@@ -1,6 +1,6 @@
 import React from "react";
 import TacticDataProvider from "./tactic/tacticdataprovider";
-import { CrudFilter } from "@pankod/refine-core";
+import { CrudFilter, useList } from "@pankod/refine-core";
 import ColorHash from "color-hash";
 import {
     Link,
@@ -8,6 +8,7 @@ import {
     Typography,
 } from "@pankod/refine-mui";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { ITask, } from "./interfaces";
 
 export const LOGIN_TICKET = "login_ticket";
 export const USER_LOGIN = "login";

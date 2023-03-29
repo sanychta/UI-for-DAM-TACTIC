@@ -96,9 +96,9 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
     })
 
     var sub_filter_value = ['dolly3d_render', 'dolly3d/light', 'dolly3d/publish'];
-    const [filterPipeline, setFilterPipeline] = useState<string[]>(
-        getDefaultFilter("code", filters, "in") ?? sub_filter_value,
-    );
+    // const [filterPipeline, setFilterPipeline] = useState<string[]>(
+    //     getDefaultFilter("code", filters, "in") ?? sub_filter_value,
+    // );
 
     const { data: taskStatus, isLoading: taskStatusLoading } = useList({
         resource: "pipes",
@@ -219,13 +219,13 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
 
         if (target < 0) {
 
-            setFilterPipeline((prevPipe) => { return [...prevPipe, task_pipeline]; });
+            // setFilterPipeline((prevPipe) => { return [...prevPipe, task_pipeline]; });
             setFilterTaskProcess((prevNames) => { return [...prevNames, clickedName]; });
         } else {
 
-            const copyFilterPipe = [...filterPipeline];
-            copyFilterPipe.splice(target, 1);
-            setFilterPipeline(copyFilterPipe);
+            // const copyFilterPipe = [...filterPipeline];
+            // copyFilterPipe.splice(target, 1);
+            // setFilterPipeline(copyFilterPipe);
 
             const copyFilterNames = [...filterTaskProcess];
 
