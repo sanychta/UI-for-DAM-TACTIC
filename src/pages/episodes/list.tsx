@@ -126,7 +126,7 @@ export const ScenesList: React.FC<IResourceComponentsProps> = () => {
                     <Card sx={{ paddingX: { xs: 3, md: 0 } }}>
                         <CardHeader title={t("assets.tagFilterDescription")} titleTypographyProps={{variant: "body1"}} />
                         <CardContent >
-                            <Stack padding="8px">
+                            <Stack padding="5px">
                                 <CategoryFilter
                                     setFilters={setFilters}
                                     filters={filters}

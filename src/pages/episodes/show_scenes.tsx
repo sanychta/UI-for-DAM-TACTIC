@@ -8,7 +8,6 @@ import {
 import {
     Avatar,
     Grid,
-    List,
     Paper,
     Stack,
     Typography,
@@ -18,80 +17,26 @@ import {
     Dialog,
     Box,
     DialogContent,
-    // padding,
     Breadcrumb,
 } from "@pankod/refine-mui";
 import DescriptionRoundedIcon from '@mui/icons-material/DescriptionRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { IScenes, } from "../../interfaces";
 import CircularProgress from '@mui/material/CircularProgress';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import CloseIcon from '@mui/icons-material/Close';
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import Reviews from "../../components/scenes/taskitem";
 import { SimpleScript } from "../../contexts/icons";
 import { getAcronym, getColorHash } from "../../conf";
 import { 
-    // SaveTaskForScene, 
-    // get_pipe_options, 
+    SavePipeProcess,
+    SaveTaskForScene,
     ColorLuminance 
 } from '../../conf';
 import Link from '@mui/material/Link';
-
-type SceneInfoTextProps = {
-    icon: React.ReactNode;
-    text?: string;
-};
-
-const SceneInfoText: React.FC<SceneInfoTextProps> = ({ icon, text }) => { 
-    if(Array.isArray(text)){
-        return (
-            <Stack sx={{ display: text === null ? "none" : "flex" }}>
-                <Stack
-                    direction="row"
-                    justifyContent={{
-                        lg: "flex-start",
-                    }}
-                    gap={1}
-                >
-                    {icon}
-                    <Stack direction="column">
-                    {text.map((element) => {
-                        if (element.indexOf('http')){
-                            return (<Typography variant="body1">{element}</Typography>)
-                        }else{
-                            return (
-                                <Link href={element} variant="body1" target="_blank" rel="noreferrer">
-                                    {element}
-                                </Link>)
-                        }
-                    })}
-                    </Stack>
-                </Stack>
-                <Divider flexItem sx={{ borderColor: "text.secondary", margin: "10px 20% 10px 20%" }} />
-            </Stack>
-        )
-    }else{
-        return (
-            <Stack sx={{ display: text === null ? "none" : "flex" }}>
-                <Stack
-                    direction="row"
-                    justifyContent={{
-                        lg: "flex-start",
-                    }}
-                    gap={1}
-                >
-                    {icon}
-                    <Typography variant="body1">{text}</Typography>
-                </Stack>
-                <Divider flexItem sx={{ borderColor: "text.secondary", margin: "10px 20% 10px 20%" }} />
-            </Stack>
-    )}
-};
 
 type UsersInfoTextProps = {
     process: {
@@ -105,7 +50,6 @@ type UsersInfoTextProps = {
         name: string,
     };
 };
-
 
 type ImageURL = {
     avatar: {
@@ -137,7 +81,6 @@ const UserAvatar: React.FC<ImageURL> = (avatar) => {
 }
 
 const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => { 
-    
     return (
         <Stack
             direction="column"
@@ -151,11 +94,9 @@ const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => {
             <Stack 
                 direction="column" 
                 width="100%"
-                // justifyContent="center"
             >
                 <Stack 
                     alignItems="flex-start"
-                    // justifyContent="center"
                     direction="row"
                 >
                     <Box sx={{
@@ -165,7 +106,7 @@ const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => {
                         width: '2px',
                         position: 'relative',
                         top: '-4px',
-                        left: '-8px',
+                        left: '-7px',
                         bgcolor: ColorLuminance(String(data.process.color), 0),
                         borderRadius: 10,
                     }} >
@@ -218,7 +159,6 @@ type UsersList = {
 }
 
 const UsersInfo: React.FC<UsersList> = (userList)=>{
-    console.log("🚀 ~ file: show_scenes.tsx:221 ~ users:", userList.users);
     return (
         <>
             {userList.users.map(
@@ -248,15 +188,13 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
         </Box>
     } else {
     const scene = data?.data;
+    SavePipeProcess(scene?.pipeline_code);
+    SaveTaskForScene(scene?.code);
     // const { show } = useNavigation();
     return ( 
         <Grid container spacing={2}>
-            {/* <Grid item width="100%">
-                <Paper>
-                    <Typography variant="subtitle1"> {scene?.name} </Typography>
-                </Paper>
-            </Grid> */}
-            <Grid item xs={12} lg={2}>
+            <Grid item xs={2}>
+                {/* lg={2} md={2} xl={2}> */}
                 <Stack>
                     <Paper sx={{ p: 1, justifyContent: "start"}}>
                         <Stack alignItems="center" spacing={2} >
@@ -269,15 +207,15 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                             </Typography>
                         </Stack>
                         <ScriptDialog script={scene?.script} />
-                        <Divider flexItem sx={{ borderColor: "text.secondary", margin: "10px 20% 10px 20%" }} />
+                        <Divider flexItem sx={{ borderColor: "#464646", margin: "10px 20% 10px 20%" }} />
                         <Stack spacing={1}>
-                            <SceneInfoText
+                            <DescriptionText
                                 icon={<DescriptionRoundedIcon />}
-                                text={scene?.description}
+                                description={scene?.description}
                             />
-                            <SceneInfoText
+                            <KeywordsText
                                 icon={<KeyRoundedIcon />}
-                                text={scene?.keywords}
+                                keywords={scene?.keywords}
                             />
                             <UsersInfo users={getProcessUsers() || []} />
                         </Stack>
@@ -288,7 +226,7 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                 <Stack direction="column" spacing={2} >
                     <Stack direction="row" width="100%">
                     <Paper sx={{width: "100%" }}>
-                        <Breadcrumb breadcrumbProps={{ sx: { padding: "5px" } }} />
+                        <Breadcrumb breadcrumbProps={{ sx: { padding: "10px" } }} />
                     </Paper>
                     </Stack>
                     <Reviews 
@@ -366,3 +304,108 @@ function ScriptDialog(script:ScriptText) {
         </Stack>
     );
 }
+
+type DescriptionProps = {
+    icon: React.ReactNode;
+    description?: string;
+}
+
+const DescriptionText: React.FC<DescriptionProps> = ({ icon, description }) => {
+    if (Array.isArray(description)) {
+        return (
+            <Stack sx={{ display: description === null ? "none" : "flex" }}>
+                <Stack
+                    direction="row"
+                    justifyContent={{
+                        lg: "flex-start",
+                    }}
+                    gap={1}
+                >
+                    {icon}
+                    <Stack direction="column">
+                        {description.map((element) => {
+                            if (element.indexOf('http')) {
+                                return (<Typography variant="subtitle1">{element}</Typography>)
+                            } else {
+                                return (
+                                    <Link href={element} variant="subtitle1" target="_blank" rel="noreferrer">
+                                        {element}
+                                    </Link>)
+                            }
+                        })}
+                    </Stack>
+                </Stack>
+                <Divider flexItem sx={{ borderColor: "#464646", margin: "10px 20% 10px 20%" }} />
+            </Stack>
+        )
+    } else {
+        return (
+            <Stack sx={{ display: description === null ? "none" : "flex" }}>
+                <Stack
+                    direction="row"
+                    justifyContent={{
+                        lg: "flex-start",
+                    }}
+                    gap={1}
+                >
+                    {icon}
+                    <Typography variant="subtitle1">{description}</Typography>
+                </Stack>
+                <Divider flexItem sx={{ borderColor: "#464646", margin: "10px 20% 10px 20%" }} />
+            </Stack>
+        )
+    }
+};
+
+type KeywordsProps = {
+    icon: React.ReactNode;
+    keywords?: string;
+}
+
+const KeywordsText: React.FC<KeywordsProps> = ({ icon, keywords }) => {
+    if (Array.isArray(keywords)) {
+        return (
+            <Stack sx={{ display: keywords === null ? "none" : "flex" }}>
+                <Stack
+                    direction="row"
+                    justifyContent={{
+                        lg: "flex-start",
+                    }}
+                    gap={1}
+                >
+                    {icon}
+                    <Typography variant="subtitle1">
+                        {keywords.map(keyword => 
+                            <Link 
+                                href={'/tactic/refine_test/scenes'}
+                                onClick={() => localStorage.setItem('searchFilter', JSON.stringify(keyword))}
+                                underline="hover" 
+                                variant="subtitle1" 
+                                rel="noreferrer">
+                                    {'#' + keyword + ' '}
+                                </Link>
+                            )
+                        }
+                    </Typography>
+                </Stack>
+                <Divider flexItem sx={{ borderColor: "#464646", margin: "10px 20% 10px 20%" }} />
+            </Stack>
+        )
+    } else {
+        return (
+            <Stack sx={{ display: keywords === null ? "none" : "flex" }}>
+                <Stack
+                    direction="row"
+                    justifyContent={{
+                        lg: "flex-start",
+                    }}
+                    gap={1}
+                >
+                    {icon}
+                    <Typography variant="subtitle1">{keywords}</Typography>
+                </Stack>
+                <Divider flexItem sx={{ borderColor: "#464646", margin: "10px 20% 10px 20%" }} />
+            </Stack>
+        )
+    }
+};

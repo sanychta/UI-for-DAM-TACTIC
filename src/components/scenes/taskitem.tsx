@@ -10,7 +10,6 @@ import {
     TextField,
     IconButton,
     CardContent,
-    // Create,
     Typography,
 } from "@pankod/refine-mui";
 import Popper from '@mui/material/Popper';
@@ -32,7 +31,6 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TacticDataProvider from '../../tactic/tacticdataprovider';
 import { SaveTaskForScene, get_pipe_options, ColorLuminance } from '../../conf';
-import CircularProgress from '@mui/material/CircularProgress';
 const locales = ['en', 'ru'] as const;
 
 const StyledPopper = styled(Popper)({
@@ -85,16 +83,7 @@ const Update_save = (data: CaptionName) => {
                 },
             };
 
-            TacticDataProvider().update(update_data);
-            if (textStatus!==null) {
-                if (oldStatus==='Status' && newStatus!==''){
-                    textStatus.textContent = newStatus
-                } else if (oldStatus!=='' && newStatus!=='') {
-                    textStatus.textContent = newStatus
-                } else {
-                    textStatus.textContent = oldStatus
-                }
-            }
+            TacticDataProvider().update(update_data).then(() => SaveTaskForScene(data.scene_code));
         } else {
             const save_data = {
                 resource: 'tasks',
@@ -113,14 +102,11 @@ const Update_save = (data: CaptionName) => {
                     },
                 },
             };
-
-            if (textStatus !== null) { textStatus.textContent = newStatus !== '' && newStatus !== undefined ? newStatus : 'Status' };
-            TacticDataProvider().create(save_data);
+            TacticDataProvider().create(save_data).then(() => SaveTaskForScene(data.scene_code));
         };
     };
     const save_box = document.getElementById(data?.name + '-box');
     if (save_box !== null) { save_box.style.display = 'none' };
-    SaveTaskForScene(data.scene_code);
 };
 
 type AssignedGroup = {
@@ -226,8 +212,8 @@ const ItemCaption: React.FC<CaptionName> = (items) => {
                 height: '35px',
                 width: '2px',
                 position: 'relative',
-                top: '-4px',
-                left: '-8px',
+                top: '-6px',
+                left: '-12px',
                 bgcolor: ColorLuminance(String(items?.color), 0),
                 borderRadius: 10,
             }} >
@@ -250,54 +236,30 @@ const ItemCaption: React.FC<CaptionName> = (items) => {
             >
                 <SaveIcon 
                     fontSize="inherit"
-                    // sx={{ fontSize: 14 }} 
                 />
             </IconButton>
         </Box>
     </Box>
 }
 
-const StatusCombo: React.FC<CaptionName> =(items) => {
-    
-    const [open, setOpen] = React.useState(false);
-    const [options, setOptions] = React.useState<readonly IPipeline[]>([]);
-    const [color_value, setValue] = React.useState<IPipeline | null>(null);
-    const loading = open && options.length === 0;
-    const task = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element: any) => element.process === items?.name);
-    const def_value_status = task?.map((val:any)=>val?.status);
+const StatusCombo2: React.FC<CaptionName> = (items) => {
+
+    const task = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element: any) => element.process === items?.name) || [];
+    const [status, setStatus] = React.useState<string>( task.length >0 ? task[0].status : '')
     const { data: pipe } = useList<IPipeline>(get_pipe_options(items?.pipeline_code));
-    const pipe_data = pipe?.data;
+    const pipe_data = pipe?.data || [];
+
     var bg_color_status = '';
-    if (pipe_data!== undefined) {
-        if (pipe_data.length > 0) {
-            for (let i = 0; i < pipe_data.length; i++) {
-                if (def_value_status !== undefined) {
-                    if (pipe_data[i].name === def_value_status[0]) {
-                        bg_color_status = pipe_data[i].color;
-                        break;
-                    }
+    if (pipe_data.length > 0) {
+        for (let i = 0; i < pipe_data.length; i++) {
+            if (status !== '') {
+                if (pipe_data[i].name === status) {
+                    bg_color_status = ColorLuminance(pipe_data[i].color, -0.5);
+                    break;
                 }
             }
         }
     };
-    React.useEffect(() => {
-            const pipes = pipe?.data !== undefined ? pipe?.data : [];
-            let active = true;
-            if (!loading) {
-                return undefined;
-            }
-            if (active) {
-                setOptions([...pipes]);
-            }
-            return () => {
-            active = false;
-            };
-    }, [bg_color_status, pipe, loading]);
-    React.useEffect(() => {
-            if (!open) {
-                setOptions([]);
-            }
-    }, [open]);
     if (items.name !== 'assets') {
         return <Box
             id={items.box_id}
@@ -307,59 +269,42 @@ const StatusCombo: React.FC<CaptionName> =(items) => {
                 textAlign: "center",
                 borderRadius: 1,
                 bgcolor: bg_color_status !== undefined ? bg_color_status : null,
-                spacing: 0.5,
-                padding: '1.5px',
+                spacing: 1,
+                padding: '0px',
             }}
-            >
-                <Autocomplete
-                    id={items?.name + "-comboStatus"}
-                    open={open}
-                    onOpen={() => { setOpen(true); }}
-                    onClose={() => { setOpen(false); }}
-                    isOptionEqualToValue={(option, value) => option?.name === value?.name}
-                    getOptionLabel={(option) => option?.name}
-                    options={options}
-                    loading={loading}
-                    size="small"
-                    PopperComponent={StyledPopper}
-                    componentsProps={{ clearIndicator: { size: 'small', sx: { fontSize: '0.5rem' } } }}
-                    sx={{
-                        '& label': {
-                            fontSize: '10px',
-                            lineHeight: '1rem',
-                        },
-                        '& input': {
-                            fontSize: '10px',
-                            lineHeight: '1rem',
-                        },
-                        padding: '0px',
-                    }}
-                    fullWidth
-                    onChange={(event: any, newValue: IPipeline | null, reason, details) => {
-                        const elem = document.getElementById(String(items?.name));
-                        setValue(newValue);
-                        if (elem !== null) { elem.style.backgroundColor = String(newValue?.color); };
-                        const save_box = document.getElementById(String(items?.name + '-box'));
-                        if (save_box !== null) { save_box.style.display = 'flex' }
-                    }}
-                    renderInput={(params) => 
-                        <TextField
-                            {...params}
-                            label={def_value_status !== undefined ? def_value_status?.length > 0 ? def_value_status[0] : 'Status' : 'Status'}
-                            value={def_value_status !== undefined ? def_value_status[0] : null }
-                            InputProps={{
-                                ...params.InputProps,
-                                endAdornment: (
-                                    <React.Fragment>
-                                        {loading ? <CircularProgress color="inherit" size={20} /> : null}
-                                        {params.InputProps.endAdornment}
-                                    </React.Fragment>
-                                ),
-                            }}
-                        />
-                    }
-                />
-            </Box>
+        >
+            <Autocomplete
+                id={items?.name + "-comboStatus"}
+                options={pipe_data.map((option: IPipeline) => option.name)}
+                size="small"
+                value={status}
+                PopperComponent={StyledPopper}
+                componentsProps={{ clearIndicator: { size: 'small', sx: { fontSize: '0.5rem' } } }}
+                sx={{
+                    '& label': {
+                        fontSize: '12px',
+                        lineHeight: '1rem',
+                    },
+                    '& input': {
+                        fontSize: '12px',
+                        lineHeight: '1rem',
+                    },
+                    padding: '0px',
+                }}
+                fullWidth
+                onChange={(event: any, newValue: string | null, reason, details) => {
+                    setStatus(String(newValue));
+                    const save_box = document.getElementById(String(items?.name + '-box'));
+                    if (save_box !== null) { save_box.style.display = 'flex' }
+                }}
+                renderInput={(params) =>
+                    <TextField
+                        {...params}
+                        label="<Status>"
+                    />
+                }
+            />
+        </Box>
     } else {
         return <></>
     }
@@ -391,7 +336,6 @@ const BidDate: React.FC<Bid_Dates> = (date) => {
                     const save_box = document.getElementById(date.process + '-box');
                     if (save_box !== null) { save_box.style.display = 'flex' }
                 }}
-                // renderInput={(params) => <TextField id={date.id_name} variant="standard" size="small" sx={{ width: 125 }} {...params} />}
             />
         </LocalizationProvider>
     )
@@ -505,6 +449,7 @@ type DocButton = {
     script?: string;
     task_id?: any;
 }
+
 const DocButtons: React.FC<DocButton> = (data) => {
     const { show } = useNavigation();
     const showTask = () => {
@@ -518,8 +463,7 @@ const DocButtons: React.FC<DocButton> = (data) => {
             }
         }
     }
-    if (data.process !== 'assets') {
-        
+    if (data.process !== 'assets') {    
         return <Box
             sx={{
                 display: "flex",
@@ -547,7 +491,8 @@ type SceneCode = {
 };
 
 const Item2: React.FC<SceneCode> = (scene_code) => {
-    var process = JSON.parse(String(localStorage.getItem('PIPELINE_PROCESS')));
+    var process = JSON.parse(String(localStorage.getItem('PIPELINE_PROCESS'))) || [];
+    console.log("🚀 ~ file: taskitem.tsx:499 ~ process:", process)
     
     // setTimeout(async function () {
     //     const reloaded = localStorage.getItem('reloaded') ?? false;
@@ -570,16 +515,23 @@ const Item2: React.FC<SceneCode> = (scene_code) => {
                     <Card
                         sx={{
                             display: "flex",
-                            padding: '2px',
+                            padding: '5px',
+                            '.MuiGrid-item': {
+                                paddingLeft: '5px',
+                            },
                             flexDirection: "column",
                             position: "relative",
                             height: "100%",
                             width: "100%",
+                            '.MuiCardContent-root:last-child': {
+                                paddingBottom: '5px',
+                            }
                         }}
                     >
-                        <CardContent sx={{
-                            padding: '2px',
-                        }}>
+                        <CardContent 
+                            sx={{
+                                padding: '5px',
+                            }}>
                             <ItemCaption 
                                 caption={items?.label !== undefined ? items.label : items?.name} 
                                 pipeline_code={items?.task_pipeline} 
@@ -588,11 +540,11 @@ const Item2: React.FC<SceneCode> = (scene_code) => {
                                 scene_code={scene_code.code}
                                 color={items?.color} 
                             />
-                            <StatusCombo 
-                                box_id={items?.name} 
-                                name={items?.name} 
-                                pipeline_code={items?.task_pipeline} 
-                                scene_code={scene_code.code} 
+                            <StatusCombo2
+                                box_id={items?.name}
+                                name={items?.name}
+                                pipeline_code={items?.task_pipeline}
+                                scene_code={scene_code.code}
                             />
                             <BidDates 
                                 id_name={items?.name} 
@@ -627,25 +579,11 @@ type Review = {
 
 const Reviews: React.FC<Review> = (scene_code) => {
     // const t = useTranslate();
-    // const { show } = useNavigation();
-    // const { mutate: mutateDelete } = useDelete();
-    // const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-    // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    //     setAnchorEl(event.currentTarget);
-    // };
-    // const handleClose = () => {
-    //     setAnchorEl(null);
-    // };
-    // const open = Boolean(anchorEl);
-    // const popoverId = open ? "simple-popover" : undefined;
-    
     return (
         <Box sx={{ 
             width: '100%', 
             padding: 0.5, 
             borderRadius: 1, 
-            // overflow: 'auto', 
-            // bgcolor: 'text.secondary' 
             }}
         >
             <Grid 
@@ -656,8 +594,7 @@ const Reviews: React.FC<Review> = (scene_code) => {
                 width={'100%'}
                 rowSpacing={1}
                 sx={{ 
-                    padding: '3px',
-                    // flexWrap: 'nowrap',
+                    padding: '3px 3px 3px 0px',
                 }}
                 spacing={1}
             >
