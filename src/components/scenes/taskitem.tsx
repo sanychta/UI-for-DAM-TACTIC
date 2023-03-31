@@ -139,6 +139,7 @@ const UsersList: React.FC<AssignedGroup> = (data) => {
                 display: "flex",
                 justifyContent: "center",
                 borderRadius: 1,
+                marginTop: "5px",
                 padding: '2px'
             }}>
             <Autocomplete
@@ -196,6 +197,7 @@ const ItemCaption: React.FC<CaptionName> = (items) => {
         alignItems: "center",
         padding: '1.5px',
         borderRadius: 1,
+        marginTop: "-7px",
         height: "30px"
     }}>
         <Box sx={{
@@ -212,7 +214,7 @@ const ItemCaption: React.FC<CaptionName> = (items) => {
                 height: '35px',
                 width: '2px',
                 position: 'relative',
-                top: '-6px',
+                top: '-2px',
                 left: '-12px',
                 bgcolor: ColorLuminance(String(items?.color), 0),
                 borderRadius: 10,
@@ -270,6 +272,8 @@ const StatusCombo2: React.FC<CaptionName> = (items) => {
                 borderRadius: 1,
                 bgcolor: bg_color_status !== undefined ? bg_color_status : null,
                 spacing: 1,
+                marginTop: "5px",
+                marginBottom: "5px",
                 padding: '0px',
             }}
         >
@@ -379,15 +383,21 @@ const BidDates: React.FC<Bid_Dates> = (data) => {
 type ChartData = {
     name: string,
     assets: string,
+    width: number,
+    height: number,
 }
+
 const AssetsChart: React.FC<ChartData> = (data) => {
+    const dx = 5;
+    const dy = 5;
+
     if (data.name === 'assets'){
         const label = data.assets !== undefined ? data.assets : ' ';
         const asset_value = !isNaN(Number(data.assets?.split('/')[0])) && Number(data.assets?.split('/')[0]) !== 0 && data.assets?.split('/')[0]!== undefined ? Number(data.assets?.split('/')[0]) : 1;
         const asset_count = !isNaN(Number(data.assets?.split('/')[1])) && Number(data.assets?.split('/')[1]) !== 0 && data.assets?.split('/')[1] !== undefined ? Number(data.assets?.split('/')[1]) : 1;
         const angle = Math.trunc((360 / asset_count) * (asset_count - asset_value));
         const asset = [{ name: "Assets", value: asset_value}];
-        // const RADIAN = Math.PI / 180;
+        
         const renderCustomizedLabel = ({
             cx,
             cy,
@@ -397,14 +407,17 @@ const AssetsChart: React.FC<ChartData> = (data) => {
             percent,
             index
         }: any) => {
-            // const radius = innerRadius + (outerRadius - innerRadius);
-            // const x = cx + radius * Math.cos(-midAngle * RADIAN);
-            // const y = cy + radius * Math.sin(-midAngle * RADIAN);
+            switch (label.length){
+                    case 3: cx = cx - 12; break;
+                    case 4: cx = cx - 14; break;
+                    case 5: cx = cx - 18; break;
+            }
             return (
                 <text
-                    x={52}
-                    y={78}
-                    fill="text.primary"
+                    id="chart_label"
+                    x={cx}
+                    y={cy}
+                    fill="#7c7c7c"
                     textAnchor={"center"}
                     dominantBaseline="central"
                 >
@@ -419,15 +432,15 @@ const AssetsChart: React.FC<ChartData> = (data) => {
                 justifyContent: "center",
             }}
         >
-            <PieChart width={154} height={167}>
+            <PieChart width={data.width} height={data.height}>
                 <Pie
                     data={asset}
-                    cx={65}
-                    cy={75}
+                    cx={Math.trunc(data.width / 2)-dx}
+                    cy={Math.trunc(data.height / 2)-dy}
                     labelLine={false}
                     label={renderCustomizedLabel}
-                    innerRadius={50}
-                    outerRadius={60}
+                    innerRadius={65}
+                    outerRadius={75}
                     stroke="none"
                     paddingAngle={angle !== undefined ? angle : 0}
                     fill="#8884d8"
@@ -561,6 +574,8 @@ const Item2: React.FC<SceneCode> = (scene_code) => {
                             <AssetsChart 
                                 name={items?.name} 
                                 assets={String(scene_code?.assets)}
+                                width={154}
+                                height={182}
                             />
                         </CardContent>
                     </Card>
@@ -578,11 +593,9 @@ type Review = {
 }
 
 const Reviews: React.FC<Review> = (scene_code) => {
-    // const t = useTranslate();
     return (
         <Box sx={{ 
             width: '100%', 
-            padding: 0.5, 
             borderRadius: 1, 
             }}
         >

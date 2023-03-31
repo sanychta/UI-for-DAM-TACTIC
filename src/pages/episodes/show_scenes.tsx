@@ -85,6 +85,7 @@ const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => {
         <Stack
             direction="column"
             alignItems="center"
+            marginLeft="5px"
             justifyContent={{
                 sm: "center",
                 lg: "flex-start",
@@ -93,6 +94,7 @@ const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => {
         >
             <Stack 
                 direction="column" 
+                marginBottom="8px"
                 width="100%"
             >
                 <Stack 
@@ -105,8 +107,8 @@ const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => {
                         height: '25px',
                         width: '2px',
                         position: 'relative',
-                        top: '-4px',
-                        left: '-7px',
+                        top: '-2px',
+                        left: '-12px',
                         bgcolor: ColorLuminance(String(data.process.color), 0),
                         borderRadius: 10,
                     }} >
@@ -193,10 +195,10 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
     // const { show } = useNavigation();
     return ( 
         <Grid container spacing={2}>
-            <Grid item xs={2}>
+            <Grid item xs={12} lg={2.5}>
                 {/* lg={2} md={2} xl={2}> */}
                 <Stack>
-                    <Paper sx={{ p: 1, justifyContent: "start"}}>
+                    <Paper sx={{ padding: "12px 8px 12px 8px", justifyContent: "start"}}>
                         <Stack alignItems="center" spacing={2} >
                             <Avatar
                                 src={scene?.image.url}
@@ -208,7 +210,7 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                         </Stack>
                         <ScriptDialog script={scene?.script} />
                         <Divider flexItem sx={{ borderColor: "#464646", margin: "10px 20% 10px 20%" }} />
-                        <Stack spacing={1}>
+                        <Stack spacing={1} marginLeft="5px" marginRight="8px" >
                             <DescriptionText
                                 icon={<DescriptionRoundedIcon />}
                                 description={scene?.description}
@@ -222,7 +224,7 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                     </Paper>
                 </Stack>
             </Grid>
-            <Grid item xs={12} lg={10}>
+            <Grid item xs={12} lg={9.5}>
                 <Stack direction="column" spacing={2} >
                     <Stack direction="row" width="100%">
                     <Paper sx={{width: "100%" }}>
@@ -322,7 +324,20 @@ const DescriptionText: React.FC<DescriptionProps> = ({ icon, description }) => {
                     gap={1}
                 >
                     {icon}
-                    <Stack direction="column">
+                    <Stack direction="column" 
+                        sx={{
+                            overflowX:"auto",
+                            "::-webkit-scrollbar": {
+                                height: '10px',
+                                borderRadius: '5px',
+                                background: '#525252'
+                            },
+                            "::-webkit-scrollbar-thumb":{
+                                background: "#767676",
+                                height: '10px',
+                            }
+                        }}
+                    >
                         {description.map((element) => {
                             if (element.indexOf('http')) {
                                 return (<Typography variant="subtitle1">{element}</Typography>)

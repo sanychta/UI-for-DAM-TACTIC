@@ -69,10 +69,12 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                 }}
             >
                 <Grid container columns={16}>
+                    {/* <Grid item xs={16} md={4}> */}
                     <CategoryFilter
                         setFilters={setFilters}
                         filters={filters}
                     />
+                    {/* </Grid> */}
                     <Grid item xs={16} md={12}>
                         <Stack
                             display="flex"

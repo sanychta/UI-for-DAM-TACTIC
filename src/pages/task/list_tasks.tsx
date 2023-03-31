@@ -97,7 +97,6 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
         <Grid container spacing={2}>
             <Grid item xs={12} lg={3}>
                 <Card sx={{ paddingX: { xs: 3, md: 0 } }}>
-                    <CardHeader title={t("assets.tagFilterDescription")} titleTypographyProps={{ variant: "body1" }} />
                     <CardContent >
                         <Stack padding="8px">
                             <TasksFilter

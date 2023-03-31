@@ -135,9 +135,6 @@ export const CategoryFilter: React.FC<AssetItemProps> = ({
             }}
         >
             <Stack padding="8px">
-                <Typography variant="subtitle1">
-                    {t("assets.tagFilterDescription")}
-                </Typography>
                 <TextField
                     sx={{
                         ml: 0,
