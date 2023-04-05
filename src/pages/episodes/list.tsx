@@ -145,7 +145,7 @@ export const ScenesList: React.FC<IResourceComponentsProps> = () => {
                                  },
                                 avatar: <MovieFilterTwoToneIcon />,
                                 action: <CreateButton sx={{ margin: '10px 5px 0px 0px'}} onClick={() => showCreateDrawer()} />,
-                                title: <Typography variant="h5" > { t("scenes.scenes") }</Typography>
+                                title: <Typography variant="h6" > { t("scenes.scenes") }</Typography>
                             }}
                         >
                             <DataGrid
@@ -179,7 +179,7 @@ export const ScenesList: React.FC<IResourceComponentsProps> = () => {
                                     SaveUsersInLS();
                                     SaveLoginGroup();
                                     SaveLoginInGroup();
-                                    SavePipeProcess(row.row?.pipeline_code);
+                                    SavePipeProcess(String(row.row?.pipeline_code));
                                     SaveTaskForScene(row.row?.code);
                                     show("scenes", row.id);
                                 }}

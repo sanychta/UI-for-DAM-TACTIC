@@ -31,7 +31,7 @@ import {
     HttpError,
 } from "../../interfaces";
 import { TasksFilter } from '../../components';
-
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 export const TasksList: React.FC<IResourceComponentsProps> = () => {
 
     const { show } = useNavigation();
@@ -114,7 +114,10 @@ export const TasksList: React.FC<IResourceComponentsProps> = () => {
                             padding: "4px 16px 4px 16px",
                             border: "none",
                         },
-                        avatar: <HeaderLinks showHome display="none" link="/tactic/refine_test/tasks" title={t("task.task")}/>
+                        avatar: <InventoryOutlinedIcon />,
+                        // action: <CreateButton sx={{ margin: '10px 5px 0px 0px' }} onClick={() => showCreateDrawer()} />,
+                        title: <Typography variant="h6" > {t("task.task")}</Typography>
+                        // avatar: <HeaderLinks showHome display="none" link="/tactic/refine_test/tasks" title={t("task.task")}/>
                     }}
                 >
                     <DataGrid

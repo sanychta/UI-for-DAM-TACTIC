@@ -68,19 +68,19 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
         getDefaultFilter("name|keywords|description", filters, "contains") ?? ""
     );
 
-    const [filterCategories, setFilterCategories] = useState<string[]>(
+    const [durationFilter, setDurationFilter] = useState<string[]>(
         getDefaultFilter("duration|AND", filters, "in") ?? [],
     );
 
-    const [filterTaskProcess, setFilterTaskProcess] = useState<string[]>(
+    const [taskProcessFilter, setTaskProcessFilter] = useState<string[]>(
         getDefaultFilter("PROC", filters, "in") ?? [],
     );
 
-    const [filterTaskStatus, setFilterTaskStatus] = useState<string[]>(
+    const [taskStatusFilter, setTaskStatusFilter] = useState<string[]>(
         getDefaultFilter("STAT", filters, "in") ?? [],
     );
 
-    const { data: categories, isLoading } = useList<IDuration>({
+    const { data: durations, isLoading } = useList<IDuration>({
         resource: "durations",
     });
 
@@ -96,10 +96,6 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
     })
 
     var sub_filter_value = ['dolly3d_render', 'dolly3d/light', 'dolly3d/publish'];
-    // const [filterPipeline, setFilterPipeline] = useState<string[]>(
-    //     getDefaultFilter("code", filters, "in") ?? sub_filter_value,
-    // );
-
     const { data: taskStatus, isLoading: taskStatusLoading } = useList({
         resource: "pipes",
         config: {
@@ -120,62 +116,73 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
     useEffect(()=>{
         const loadFilters = loadFiltersFromLocalStorage();
         setSearchFilter(loadFilters[0] !== null ? loadFilters[0] : '');
-        setFilterCategories(loadFilters[1] !== null ? loadFilters[1] : []);
-        setFilterTaskProcess(loadFilters[2] !== null ? loadFilters[2] : []);
-        setFilterTaskStatus(loadFilters[3] !== null ? loadFilters[3] : []);
+        setDurationFilter(loadFilters[1] !== null ? loadFilters[1] : []);
+        setTaskProcessFilter(loadFilters[2] !== null ? loadFilters[2] : []);
+        setTaskStatusFilter(loadFilters[3] !== null ? loadFilters[3] : []);
         setFilters(loadFilters[4] !== null ? loadFilters[4] : []);
     },[]);
 
     useEffect(() => {
-        var filter: CrudFilters;
-        if (filterTaskStatus.length > 0 && filterTaskProcess.length > 0 && filterCategories.length > 0) {
-            const values = filterTaskProcess.concat('|', filterTaskStatus, '|', filterCategories);
-            filter = [{
-                field: "PROC$STAT$duration|AND",
-                operator: "in",
-                value: values.length > 0 ? values : undefined,
-            }];
-        } else if (filterTaskProcess.length > 0 && filterCategories.length > 0 && filterTaskStatus.length === 0) {
-            const values = filterTaskProcess.concat('|', filterCategories);
-            filter = [{
-                field: 'PROC$duration|AND',
-                operator: "in",
-                value: values.length > 0 ? values : undefined,
-            }];
-        } else if (filterTaskStatus.length > 0 && filterCategories.length > 0 && filterTaskProcess.length === 0) {
-            const values = filterTaskStatus.concat('|', filterCategories);
-            filter = [{
-                field: 'STAT$duration|AND',
-                operator: "in",
-                value: values.length > 0 ? values : undefined,
-            }]
-        } else if (filterTaskProcess.length > 0 && filterTaskStatus.length > 0 && filterCategories.length === 0) {
-            const values = filterTaskProcess.concat('|', filterTaskStatus);
-            filter = [{
-                field: 'PROC$STAT',
-                operator: "in",
-                value: values.length > 0 ? values : undefined,
-            }]
-        } else if (filterTaskProcess.length > 0 && filterTaskStatus.length === 0 && filterCategories.length === 0) {
-            filter = [{
-                field: 'PROC',
-                operator: "in",
-                value: filterTaskProcess.length > 0 ? filterTaskProcess : undefined,
-            }]
-        } else if (filterTaskProcess.length === 0 && filterTaskStatus.length > 0 && filterCategories.length === 0) {
-            filter = [{
-                field: 'STAT',
-                operator: "in",
-                value: filterTaskStatus.length > 0 ? filterTaskStatus : undefined,
-            }];
-        } else if (filterTaskProcess.length === 0 && filterTaskStatus.length === 0 && filterCategories.length > 0) {
-            filter = [{
-                field: "duration|AND",
-                operator: "in",
-                value: filterCategories.length > 0 ? filterCategories : undefined,
-            }]
-        } else
-            filter = [];
+        let filter: CrudFilters;
+        let values: string[];
+        switch (true){
+            case taskStatusFilter.length > 0 && taskProcessFilter.length > 0 && durationFilter.length > 0:
+                values = taskProcessFilter.concat('|', taskStatusFilter, '|', durationFilter);
+                filter = [{
+                    field: "PROC$STAT$duration|AND",
+                    operator: "in",
+                    value: values.length > 0 ? values : undefined,
+                }];
+                break;
+            case taskProcessFilter.length > 0 && durationFilter.length > 0 && taskStatusFilter.length === 0:
+                values = taskProcessFilter.concat('|', durationFilter);
+                filter = [{
+                    field: 'PROC$duration|AND',
+                    operator: "in",
+                    value: values.length > 0 ? values : undefined,
+                }];
+                break;
+            case taskStatusFilter.length > 0 && durationFilter.length > 0 && taskProcessFilter.length === 0:
+                values = taskStatusFilter.concat('|', durationFilter);
+                filter = [{
+                    field: 'STAT$duration|AND',
+                    operator: "in",
+                    value: values.length > 0 ? values : undefined,
+                }]
+                break;
+            case taskProcessFilter.length > 0 && taskStatusFilter.length > 0 && durationFilter.length === 0:
+                values = taskProcessFilter.concat('|', taskStatusFilter);
+                filter = [{
+                    field: 'PROC$STAT',
+                    operator: "in",
+                    value: values.length > 0 ? values : undefined,
+                }]
+                break;
+            case taskProcessFilter.length > 0 && taskStatusFilter.length === 0 && durationFilter.length === 0:
+                filter = [{
+                    field: 'PROC',
+                    operator: "in",
+                    value: taskProcessFilter.length > 0 ? taskProcessFilter : undefined,
+                }]
+                break;
+            case taskProcessFilter.length === 0 && taskStatusFilter.length > 0 && durationFilter.length === 0:
+                filter = [{
+                    field: 'STAT',
+                    operator: "in",
+                    value: taskStatusFilter.length > 0 ? taskStatusFilter : undefined,
+                }];
+                break;
+            case taskProcessFilter.length === 0 && taskStatusFilter.length === 0 && durationFilter.length > 0:
+                filter = [{
+                    field: "duration|AND",
+                    operator: "in",
+                    value: durationFilter.length > 0 ? durationFilter : undefined,
+                }]
+                break;
+            default: 
+                filter = [];
+                break;
+        };
         if (searchFilter !== ""){
             filter.unshift({
                 field: "name|keywords|description",
@@ -184,72 +191,72 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
             })
         }
       
-        saveFiltersToLocalStorage(searchFilter, filterCategories, filterTaskProcess, filterTaskStatus, filter);
+        saveFiltersToLocalStorage(searchFilter, durationFilter, taskProcessFilter, taskStatusFilter, filter);
 
         setFilters?.(filter)
-    }, [filterCategories, filterTaskProcess, filterTaskStatus, searchFilter]);
+    }, [durationFilter, taskProcessFilter, taskStatusFilter, searchFilter]);
     
     const toggleSearchFilter = (inputValue: string) => {
         setSearchFilter(inputValue);
     };
 
-    const toggleFilterCategory = (clickedCategory: string) => {
-        const target = filterCategories.findIndex(
-            (category) => category === clickedCategory,
+    const toggleFilterCategory = (clickedDuration: string) => {
+        const target = durationFilter.findIndex(
+            (duration) => duration === clickedDuration,
         );
 
         if (target < 0) {
-            setFilterCategories((prevCategories) => {
-                return [...prevCategories, clickedCategory];
+            setDurationFilter((prevDuration) => {
+                return [...prevDuration, clickedDuration];
             });
         } else {
-            const copyFilterCategories = [...filterCategories];
+            const copyDurationFilter = [...durationFilter];
 
-            copyFilterCategories.splice(target, 1);
+            copyDurationFilter.splice(target, 1);
 
-            setFilterCategories(copyFilterCategories);
+            setDurationFilter(copyDurationFilter);
         }
     };
 
     const toggleFilterTaskProcess = (clickedName: string, task_pipeline: string) => {
 
-        const target = filterTaskProcess.findIndex(
+        const target = taskProcessFilter.findIndex(
             (names) => names === clickedName,
         );
 
         if (target < 0) {
 
             // setFilterPipeline((prevPipe) => { return [...prevPipe, task_pipeline]; });
-            setFilterTaskProcess((prevNames) => { return [...prevNames, clickedName]; });
+            setTaskProcessFilter((prevNames) => { return [...prevNames, clickedName]; });
         } else {
 
             // const copyFilterPipe = [...filterPipeline];
             // copyFilterPipe.splice(target, 1);
             // setFilterPipeline(copyFilterPipe);
 
-            const copyFilterNames = [...filterTaskProcess];
+            const copyFilterNames = [...taskProcessFilter];
 
             copyFilterNames.splice(target, 1);
 
-            setFilterTaskProcess(copyFilterNames);
+            setTaskProcessFilter(copyFilterNames);
         };
     };
 
     const toggleFilterTaskStatus = (clickedName: string) => {
-        const target = filterTaskStatus.findIndex(
+        const target = taskStatusFilter.findIndex(
             (names) => names === clickedName,
         );
 
         if (target < 0) {
-            setFilterTaskStatus((prevNames) => {
+            setTaskStatusFilter((prevNames) => {
                 return [...prevNames, clickedName];
             });
         } else {
-            const copyFilterTaskStatus = [...filterTaskStatus];
+            const copyFilterTaskStatus = [...taskStatusFilter];
 
             copyFilterTaskStatus.splice(target, 1);
 
-            setFilterTaskStatus(copyFilterTaskStatus);
+            setTaskStatusFilter(copyFilterTaskStatus);
         };
     };
 
@@ -291,9 +298,9 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                     <Grid item p={0.5}>
                         <LoadingButton
                             color="warning"
-                            onClick={() => setFilterCategories([])}
+                            onClick={() => setDurationFilter([])}
                             variant={
-                                filterCategories.length === 0
+                                durationFilter.length === 0
                                     ? "contained"
                                     : "outlined"
                             }
@@ -307,15 +314,15 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                             {t("actions.all")}
                         </LoadingButton>
                     </Grid>
-                    {categories?.data.map((category: IDuration) => { 
+                        {durations?.data.map((duration: IDuration) => { 
 
                         return(
-                        <Grid item key={category.duration} p={0.5}>
+                            <Grid item key={duration.duration} p={0.5}>
                             <LoadingButton
                                 color="warning"
                                 variant={
-                                    filterCategories.includes(
-                                        category.duration.toString(),
+                                    durationFilter.includes(
+                                        duration.duration.toString(),
                                     )
                                         ? "contained"
                                         : "outlined"
@@ -327,10 +334,10 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                                     color: "warning"
                                 }}
                                 onClick={() =>
-                                    toggleFilterCategory(category.duration.toString())
+                                    toggleFilterCategory(duration.duration.toString())
                                 }
                             >
-                                {category.duration}
+                                    {duration.duration}
                             </LoadingButton>
                         </Grid>
                     )})}
@@ -344,10 +351,10 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                 <Grid container columns={6} marginTop="10px">
                     <Grid item p={0.5}>
                         <LoadingButton
-                            onClick={() => setFilterTaskProcess([])}
+                            onClick={() => setTaskProcessFilter([])}
                             color="info"
                             variant={
-                                filterTaskProcess.length === 0
+                                taskProcessFilter.length === 0
                                     ? "contained"
                                     : "outlined"
                             }
@@ -365,7 +372,7 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                         <Grid item key={pipeline.name} p={0.5}>
                             <LoadingButton
                                 variant={
-                                    filterTaskProcess.includes(
+                                    taskProcessFilter.includes(
                                         pipeline?.name.toString(),
                                     )
                                         ? "contained"
@@ -396,9 +403,9 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                 <Grid container columns={6} marginTop="10px">
                     <Grid item p={0.5}>
                         <LoadingButton
-                            onClick={() => setFilterTaskStatus([])}
+                            onClick={() => setTaskStatusFilter([])}
                             variant={
-                                filterTaskStatus.length === 0
+                                taskStatusFilter.length === 0
                                     ? "contained"
                                     : "outlined"
                             }
@@ -415,7 +422,7 @@ export const CategoryFilter: React.FC<ScenesItemProps> = ({
                         <Grid item key={pipeline.name} p={0.5}>
                             <LoadingButton
                                 variant={
-                                    filterTaskStatus.includes(
+                                    taskStatusFilter.includes(
                                         pipeline.name,
                                     )
                                         ? "contained"

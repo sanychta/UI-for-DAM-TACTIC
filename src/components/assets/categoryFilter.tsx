@@ -123,17 +123,17 @@ export const CategoryFilter: React.FC<AssetItemProps> = ({
     };
 
     return (
-        <Grid
-            item
-            sm={3}
-            md={3}
-            sx={{
-                display: {
-                    xs: "none",
-                    md: "block",
-                },
-            }}
-        >
+        // <Grid
+        //     item
+        //     sm={3}
+        //     md={3}
+        //     sx={{
+        //         display: {
+        //             xs: "none",
+        //             md: "block",
+        //         },
+        //     }}
+        // >
             <Stack padding="8px">
                 <TextField
                     sx={{
@@ -205,6 +205,6 @@ export const CategoryFilter: React.FC<AssetItemProps> = ({
                     ))}
                 </Grid>
             </Stack>
-        </Grid>
+        // </Grid>
     );
 };

@@ -71,7 +71,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                 position: "relative",
                 height: "100%",
             }}
-            
         >
             <CardHeader
                 action={
@@ -101,9 +100,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                                 }}
                                 size="medium"
                                 startIcon={<Preview />}
-                                sx={{
-                                    padding: "5px 10px",
-                                }}
                             >
                                 {t("assets.buttons.show")}
                             </Button>
@@ -119,9 +115,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                                     }}
                                     size="medium"
                                     startIcon={<EditIcon />}
-                                    sx={{
-                                        padding: "5px 10px",
-                                    }}
                                 >
                                     {t("assets.buttons.edit")}
                                 </Button>
@@ -142,9 +135,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                                     }}
                                     size="medium"
                                     startIcon={<Delete />}
-                                    sx={{
-                                        padding: "5px 10px",
-                                    }}
                                 >
                                     {t("assets.buttons.retired")}
                                 </Button>
@@ -160,9 +150,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                                     }}
                                     size="medium"
                                     startIcon={<DeleteForever />}
-                                    sx={{
-                                        padding: "5px 10px",
-                                    }}
                                 >
                                     {t("assets.buttons.delete")}
                                 </Button>
@@ -170,7 +157,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                         </Popover>
                     </Box>
                 }
-                sx={{ padding: 0 }}
             />
             <Card onClick={() => {show("assets", id);setAnchorEl(null);}}
                 sx={{ 
@@ -179,6 +165,7 @@ export const AssetsItem: React.FC<AssetItem> = ({
                     position: "relative",
                     height: "100%",
                     cursor: "pointer",
+                    boxShadow: "none",
                 }}
             >
                 <Box
@@ -200,7 +187,6 @@ export const AssetsItem: React.FC<AssetItem> = ({
                 </Box>
                     <CardContent
                         sx={{
-                            paddingX: "36px",
                             display: "flex",
                             flexDirection: "column",
                             flex: 0.5,

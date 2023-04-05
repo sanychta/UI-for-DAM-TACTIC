@@ -81,6 +81,7 @@ const UserAvatar: React.FC<ImageURL> = (avatar) => {
 }
 
 const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => { 
+    console.log("🚀 ~ file: show_scenes.tsx:84 ~ data:", data)
     return (
         <Stack
             direction="column"
@@ -138,6 +139,7 @@ const getProcessUsers = ()=>{
         const task = tasks.filter((element: any) => element.process === pipeline_process[proc]?.name);
         var user = [];
         if (task.length > 0) { user = users.filter((element: any) => element.code === task[0]?.assigned) };
+        console.log("🚀 ~ file: show_scenes.tsx:157 ~ getProcessUsers ~ user:", user)
         res.push({
             process: pipeline_process[proc]?.label !== undefined ? pipeline_process[proc]?.label : pipeline_process[proc]?.name,
             color: pipeline_process[proc]?.color,
@@ -153,6 +155,7 @@ const getProcessUsers = ()=>{
             result.push(res[item])
         }
     }
+    console.log("🚀 ~ file: show_scenes.tsx:157 ~ getProcessUsers ~ result:", result)
     return result;
 };
 
@@ -160,17 +163,19 @@ type UsersList = {
     users: any[];
 }
 
-const UsersInfo: React.FC<UsersList> = (userList)=>{
+const UsersInfo: React.FC<UsersList> = (userList) => {
+    console.log("🚀 ~ file: show_scenes.tsx:179 ~ userList:", userList)
     return (
         <>
             {userList.users.map(
-                (data: any) => 
-                    <UsersInfoText
+                (data: any) => {
+                    console.log("🚀 ~ file: show_scenes.tsx:178 ~ data:", data)
+                    return (<UsersInfoText
                         avatar={data.user_avatar}
                         process={{name: data.process, color: data.color}}
                         name={data.proc_user}
                         login={data.user_login}
-                    />
+                    />)}
             )}
         </>
     )
@@ -190,7 +195,7 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
         </Box>
     } else {
     const scene = data?.data;
-    SavePipeProcess(scene?.pipeline_code);
+    SavePipeProcess(String(scene?.pipeline_code));
     SaveTaskForScene(scene?.code);
     // const { show } = useNavigation();
     return ( 

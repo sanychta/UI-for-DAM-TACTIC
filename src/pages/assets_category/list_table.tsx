@@ -46,7 +46,7 @@ import {
 
 import KeyboardArrowRightOutlinedIcon from '@mui/icons-material/KeyboardArrowRightOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
-
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import { IAssetsCategory, IAssets } from "../../interfaces";
 
 import { CreateCategoryAsset, EditAsset, EditCategoryAsset } from "../../components";
@@ -183,9 +183,12 @@ export const AssetsCategoryList: React.FC<IResourceComponentsProps> = () => {
             <EditCategoryAsset {...editDrawerFormProps} />
             <List 
                 wrapperProps={{ sx: { paddingX: { xs: 2, md: 0 }, 
-                    // paddingBottom: "none" 
                 } }}
-                headerProps={{ action: <CreateButton onClick={() => {  return showCreateDrawer()}} /> }}
+                headerProps={{ 
+                    action: <CreateButton onClick={() => {  return showCreateDrawer()}} />,
+                    avatar: <CategoryOutlinedIcon />,
+                    title: <Typography variant="h6" > {t("categories.categories")}</Typography>
+                }}
             >
                 <form > 
                     {/* onSubmit={handleSubmit(onFinish)}> */}

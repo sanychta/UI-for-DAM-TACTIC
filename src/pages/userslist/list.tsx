@@ -33,7 +33,7 @@ import {
 } from "@pankod/refine-react-hook-form";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import TacticDataProvider from "../../tactic/tacticdataprovider";
 
 import { 
@@ -213,7 +213,7 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
 		<Grid container spacing={2}>
 			<Grid item xs={12} lg={3}>
 				<Card sx={{ paddingX: { xs: 3, md: 0 } }}>
-					<CardHeader title={t("userslogins.filters.title")} />
+					{/* <CardHeader title={t("userslogins.filters.title")} /> */}
 					<CardContent sx={{ pt: 0 }}>
 						<Box
 							component="form"
@@ -275,7 +275,14 @@ export const UserList: React.FC<IResourceComponentsProps> = () => {
 				</Card>
 			</Grid>
 			<Grid item xs={12} lg={9}>
-				<List cardProps={{ sx: { paddingX: { xs: 2, md: 0 } } }}>
+				<List 
+					wrapperProps={{ sx: { paddingX: { xs: 2, md: 0 } } }}
+					headerProps={{
+						// action: <CreateButton onClick={() => { return showCreateDrawer() }} />,
+						avatar: <GroupOutlinedIcon />,
+						title: <Typography variant="h6" > {t("userslogins.titles.list")}</Typography>
+					}}
+				>
 					<DataGrid
 						{...dataGridProps}
 						columns={columns}

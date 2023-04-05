@@ -12,14 +12,18 @@ import {
 import {
     Grid,
     Paper,
+    Card,
+    CardContent,
     Typography,
     Stack,
     Pagination,
     CreateButton,
+    Box,
 } from "@pankod/refine-mui";
 
 import { AssetsItem, EditAsset, CategoryFilter, CreateAsset } from "../../components";
 import { IAssets } from "../../interfaces";
+import BoxIcon from '../../contexts/box_icon';
 
 export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     
@@ -30,7 +34,7 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
     const { tableQueryResult, pageCount, setCurrent, filters, setFilters } =
         useTable<IAssets>({
             resource: "assets",
-            initialPageSize: 15,
+            initialPageSize: 16,
         });
     
     const createDrawerFormProps = useModalForm<IAssets, HttpError, IAssets>({
@@ -61,50 +65,72 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
         <>
             <CreateAsset {...createDrawerFormProps} />
             <EditAsset {...editDrawerFormProps} />
-            <Paper
-                sx={{
-                    paddingX: { xs: 3, md: 2 },
-                    paddingY: { xs: 2, md: 3 },
-                    my: 0.5,
-                }}
-            >
-                <Grid container columns={16}>
-                    {/* <Grid item xs={16} md={4}> */}
-                    <CategoryFilter
-                        setFilters={setFilters}
-                        filters={filters}
-                    />
-                    {/* </Grid> */}
-                    <Grid item xs={16} md={12}>
-                        <Stack
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            flexWrap="wrap"
-                            padding={1}
-                            direction="row"
-                            gap={2}
+                <Grid 
+                    container 
+                    columns={16} 
+                    spacing={2}
+                >
+                    <Grid item xs={12} lg={3} minWidth="250px" >
+                        <Card 
                         >
-                            <Typography variant="h5">
-                                {t("assets.assets")}
-                            </Typography>
-                            <CreateButton
-                                onClick={() => showCreateDrawer()}
-                                variant="contained"
-                                sx={{ marginBottom: "5px" }}
-                            >
-                                {t("assets.titles.create")}
-                            </CreateButton>
-                        </Stack>
-                        <Grid container>
+                            <CardContent >
+                                <Stack 
+                                >
+                                    <CategoryFilter
+                                        setFilters={setFilters}
+                                        filters={filters}
+                                    />
+                                </Stack>
+                            </CardContent>
+                        </Card>
+                    </Grid>
+                    <Grid 
+                        item 
+                        xs={12} 
+                        md={12} 
+                        spacing={2}
+                    >
+                        <Grid 
+                            container 
+                            spacing={2}
+                        >
+                        <Grid item spacing={2} width="100%">
+                            <Paper sx={{ width: "100%" }}>
+                                <Stack
+                                    display="flex"
+                                    alignItems="center"
+                                    padding="10px 10px 10px 10px"
+                                    direction="row"
+                                >
+                                    <Box marginRight="16px" width="fit-content" display="flex">
+                                        <BoxIcon viewBox="0 0 16 16" />
+                                    </Box>
+                                    <Box width="100%" display="flex">
+                                        <Typography variant="h6">
+                                            {t("assets.assets")}
+                                        </Typography>
+                                    </Box>
+                                    <Box width="-webkit-fill-available" display="flex" justifyContent="flex-end">
+                                        <CreateButton
+                                            onClick={() => showCreateDrawer()}
+                                            variant="contained"
+                                            size="small"
+                                        >
+                                            {t("assets.titles.create")}
+                                        </CreateButton>
+                                    </Box>
+                                </Stack>
+                            </Paper>
+                        </Grid>
                             {assets.length > 0 ? (
                                 assets.map((assets: IAssets) => (
                                     <Grid
                                         item
                                         xs={12}
-                                        md={4}
+                                        md={3}
+                                        spacing={2}
+                                        minWidth="250px"
                                         key={assets.id}
-                                        sx={{ padding: "8px" }}
                                     >
                                         <AssetsItem
                                             assets={assets}
@@ -117,7 +143,6 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                                 <Grid
                                     container
                                     justifyContent="center"
-                                    padding={3}
                                 >
                                     <Typography variant="body2">
                                         {t("assets.noAssets")}
@@ -145,7 +170,6 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                         />
                     </Grid>
                 </Grid>
-            </Paper>
         </>
     );
 };

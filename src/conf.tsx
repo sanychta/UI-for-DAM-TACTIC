@@ -78,11 +78,11 @@ export const SaveUsersInLS = () => {
         .then((data) => localStorage.setItem("USERS_LIST", data));
 };
 
-export const SavePipeProcess = (code: any) => {
-    var filter: CrudFilter[] = [
+export const SavePipeProcess = (code: string) => {
+    let filter: CrudFilter[] = [
         { field: "code", operator: "contains", value: code },
     ];
-    var params = { resource: "pipes", hasPagination: false, filters: filter };
+    let params = { resource: "pipes", hasPagination: false, filters: filter };
     TacticDataProvider()
         .getList(params)
         .then((res) => {
@@ -90,7 +90,6 @@ export const SavePipeProcess = (code: any) => {
             localStorage.setItem("PIPELINE_PROCESS", data);
             return data;
         })
-        .then((data) => localStorage.setItem("PIPELINE_PROCESS", data));
 };
 
 export const get_pipe_options = (value: any) => {

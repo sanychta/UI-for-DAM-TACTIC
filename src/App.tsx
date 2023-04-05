@@ -17,10 +17,11 @@ import {
   ErrorComponent,
 } from "@pankod/refine-mui";
 import MovieFilterTwoToneIcon from '@mui/icons-material/MovieFilterTwoTone';
-import TheatersTwoToneIcon from '@mui/icons-material/TheatersTwoTone';
+// import TheatersTwoToneIcon from '@mui/icons-material/TheatersTwoTone';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
-import TakeoutDiningOutlinedIcon from '@mui/icons-material/TakeoutDiningOutlined';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
+// import TakeoutDiningOutlinedIcon from '@mui/icons-material/TakeoutDiningOutlined';
 import BoxIcon from './contexts/box_icon';
 
 import { authProvider } from "./authProvider";
@@ -222,6 +223,7 @@ function App() {
                         options: { label: String(t("task.task")) },
                         list: TasksList,
                         show: TaskShow,
+                        icon: <InventoryOutlinedIcon />,
                         // show: SceneShow,
                         // create: AssetCategoryCreate,
                     },
