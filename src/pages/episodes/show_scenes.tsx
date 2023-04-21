@@ -81,7 +81,6 @@ const UserAvatar: React.FC<ImageURL> = (avatar) => {
 }
 
 const UsersInfoText: React.FC<UsersInfoTextProps> = (data) => { 
-    console.log("🚀 ~ file: show_scenes.tsx:84 ~ data:", data)
     return (
         <Stack
             direction="column"
@@ -139,7 +138,6 @@ const getProcessUsers = ()=>{
         const task = tasks.filter((element: any) => element.process === pipeline_process[proc]?.name);
         var user = [];
         if (task.length > 0) { user = users.filter((element: any) => element.code === task[0]?.assigned) };
-        console.log("🚀 ~ file: show_scenes.tsx:157 ~ getProcessUsers ~ user:", user)
         res.push({
             process: pipeline_process[proc]?.label !== undefined ? pipeline_process[proc]?.label : pipeline_process[proc]?.name,
             color: pipeline_process[proc]?.color,
@@ -155,7 +153,6 @@ const getProcessUsers = ()=>{
             result.push(res[item])
         }
     }
-    console.log("🚀 ~ file: show_scenes.tsx:157 ~ getProcessUsers ~ result:", result)
     return result;
 };
 
@@ -164,12 +161,10 @@ type UsersList = {
 }
 
 const UsersInfo: React.FC<UsersList> = (userList) => {
-    console.log("🚀 ~ file: show_scenes.tsx:179 ~ userList:", userList)
     return (
         <>
             {userList.users.map(
                 (data: any) => {
-                    console.log("🚀 ~ file: show_scenes.tsx:178 ~ data:", data)
                     return (<UsersInfoText
                         avatar={data.user_avatar}
                         process={{name: data.process, color: data.color}}
@@ -199,9 +194,18 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
     SaveTaskForScene(scene?.code);
     // const { show } = useNavigation();
     return ( 
-        <Grid container spacing={2}>
-            <Grid item xs={12} lg={2.5}>
-                {/* lg={2} md={2} xl={2}> */}
+        <Grid 
+            container 
+            spacing={2}
+        >
+            <Grid 
+                item 
+                xs={12}
+                sm={5}
+                md={4.5}
+                lg={3.5}
+                xl={2.5}
+            >
                 <Stack>
                     <Paper sx={{ padding: "12px 8px 12px 8px", justifyContent: "start"}}>
                         <Stack alignItems="center" spacing={2} >
@@ -229,7 +233,15 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                     </Paper>
                 </Stack>
             </Grid>
-            <Grid item xs={12} lg={9.5}>
+            <Grid 
+                item 
+                xs={12}
+                sm={7}
+                md={7.5}
+                lg={8.5}
+                xl={9.5}
+                spacing={2}
+            >
                 <Stack direction="column" spacing={2} >
                     <Stack direction="row" width="100%">
                     <Paper sx={{width: "100%" }}>
@@ -243,7 +255,21 @@ export const SceneShow: React.FC<IResourceComponentsProps> = () => {
                         script={scene?.script}
                     />
                 </Stack>
+                <Stack direction="column" spacing={2} >
+                    <Paper sx={{ width: "100%" }} >
+                        <Breadcrumb breadcrumbProps={{ sx: { padding: "10px" } }} />
+                    </Paper>
+                </Stack>
             </Grid>
+            {/* <Grid
+                item
+                xs={12}
+                sm={7}
+                md={7.5}
+                lg={8.5}
+                xl={9.5}
+            >
+            </Grid> */}
         </Grid>
     );
     }

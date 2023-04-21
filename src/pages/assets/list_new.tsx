@@ -70,7 +70,14 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                     columns={16} 
                     spacing={2}
                 >
-                    <Grid item xs={12} lg={3} minWidth="250px" >
+                    <Grid 
+                        item 
+                        xs={16}
+                        xl={4}
+                        lg={16}
+                        md={16}
+                        sm={16}
+                    >
                         <Card 
                         >
                             <CardContent >
@@ -86,15 +93,23 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                     </Grid>
                     <Grid 
                         item 
-                        xs={12} 
-                        md={12} 
+                        xs={16}
+                        xl={12}
+                        lg={16}
+                        md={16}
+                        sm={16}
                         spacing={2}
                     >
                         <Grid 
                             container 
                             spacing={2}
                         >
-                        <Grid item spacing={2} width="100%">
+                        <Grid 
+                            item 
+                            spacing={2} 
+                            xs={12}
+                            md={12}
+                        >
                             <Paper sx={{ width: "100%" }}>
                                 <Stack
                                     display="flex"
@@ -127,9 +142,11 @@ export const AssetsList: React.FC<IResourceComponentsProps> = () => {
                                     <Grid
                                         item
                                         xs={12}
-                                        md={3}
+                                        xl={3}
+                                        lg={4}
+                                        md={6}
+                                        sm={6}
                                         spacing={2}
-                                        minWidth="250px"
                                         key={assets.id}
                                     >
                                         <AssetsItem

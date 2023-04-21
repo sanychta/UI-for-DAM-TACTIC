@@ -31,6 +31,17 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import TacticDataProvider from '../../tactic/tacticdataprovider';
 import { SaveTaskForScene, get_pipe_options, ColorLuminance } from '../../conf';
+// import Snackbar from '@mui/material/Snackbar';
+// import MuiAlert, { AlertProps } from '@mui/material/Alert';
+
+
+// const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+//     props,
+//     ref,
+// ) {
+//     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+// });
+
 const locales = ['en', 'ru'] as const;
 
 const StyledPopper = styled(Popper)({
@@ -47,6 +58,7 @@ const StyledPopper = styled(Popper)({
 });
 
 const Update_save = (data: CaptionName) => {
+    
     const task = JSON.parse(String(localStorage.getItem('TASKS_FOR_SCENE'))).filter((element: any) => element.process === data?.name);
     const elem = document.getElementById(String(data?.name));
     const found: boolean = task.length > 0 ? true : false;
@@ -188,9 +200,31 @@ type CaptionName = {
 };
 
 const ItemCaption: React.FC<CaptionName> = (items) => {
+
+    // const [open, setOpen] = React.useState(false);
+
+    // const handleClick = () => {
+    //     setOpen(true);
+    //     Update_save({ name: items.name, scene_code: items.scene_code })
+    //     setOpen(false);
+    //     setOpen(true);
+    // };
+
+    // const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+    //     if (reason === 'clickaway') {
+    //         return;
+    //     }
+
+    //     setOpen(false);
+    // };
+
+
     const save =() =>{
+        // setOpen(true);
         Update_save({ name: items.name, scene_code: items.scene_code })
+        // setOpen(true);
     }
+
     return <Box sx={{
         display: "flex",
         justifyContent: "space-between",
@@ -235,11 +269,26 @@ const ItemCaption: React.FC<CaptionName> = (items) => {
             <IconButton
                 size = "small"
                 onClick={save}
+                // onClick={() => { setOpen(true); Update_save({ name: items.name, scene_code: items.scene_code }); setOpen(true); }}
             >
                 <SaveIcon 
                     fontSize="inherit"
                 />
+
+                {/* <Snackbar
+                    open={open}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                    autoHideDuration={3000}
+                    onClose={handleClose}
+                    message='Saved'
+                >
+                    <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                        Saved
+                    </Alert>
+                </Snackbar> */}
+
             </IconButton>
+
         </Box>
     </Box>
 }
@@ -505,7 +554,6 @@ type SceneCode = {
 
 const Item2: React.FC<SceneCode> = (scene_code) => {
     var process = JSON.parse(String(localStorage.getItem('PIPELINE_PROCESS'))) || [];
-    console.log("🚀 ~ file: taskitem.tsx:499 ~ process:", process)
     
     // setTimeout(async function () {
     //     const reloaded = localStorage.getItem('reloaded') ?? false;
@@ -524,7 +572,10 @@ const Item2: React.FC<SceneCode> = (scene_code) => {
                 } else {
                     assigned_group = items?.assigned_login_group
                 }
-                return <Grid item xs={'auto'} >
+                return <Grid 
+                    item 
+                    xs={'auto'} 
+                    >
                     <Card
                         sx={{
                             display: "flex",
@@ -605,11 +656,11 @@ const Reviews: React.FC<Review> = (scene_code) => {
                 justifyContent="flex-start"
                 alignItems="flex-start"
                 width={'100%'}
-                rowSpacing={1}
+                rowSpacing={2}
                 sx={{ 
                     padding: '3px 3px 3px 0px',
                 }}
-                spacing={1}
+                spacing={2}
             >
                 <Item2 code = {scene_code.scene_code} assets={scene_code.assets} script={scene_code.script} />
             </Grid>
